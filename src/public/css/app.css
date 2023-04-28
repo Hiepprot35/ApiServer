@@ -1,0 +1,21 @@
+table {
+  width: 100%; }
+
+.rows_custom {
+  display: table; }
+
+.column {
+  width: 20%;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid black; }
+
+.small {
+  width: 10%; }
+
+.bigger {
+  width: 30%; }
+
+a {
+  text-decoration: none !important;
+  color: black; }

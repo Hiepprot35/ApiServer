@@ -1,0 +1,42 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/HOME.js",
+  "scripts": {
+    "start": "nodemon --inspect src/HOME.js",
+    "watch": "node-sass --watch src/resources/scss -o src/public/css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "module",
+    "url": "git+https://github.com/Hiepprot35/NPM.git"
+  },
+  "keywords": [
+    "hiep"
+  ],
+  "author": "hiep",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hiepprot35/NPM/issues"
+  },
+  "homepage": "https://github.com/Hiepprot35/NPM#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql-model": "^0.0.3",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.29.0",
+    "validation-middleware": "^2.0.0"
+  },
+  "devDependencies": {
+    "node-sass": "^8.0.0"
+  }
+}

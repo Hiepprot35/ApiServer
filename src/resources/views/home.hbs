@@ -1,0 +1,83 @@
+<div class="mt-4">
+    <table class="row_custom header">
+        <thead>
+            <tr>
+
+                <th class="column small stt_header">STT
+</div>
+<th class="column small mssv">MSSV</th>
+
+<th class="column bigger">Tên</th>
+
+<th class="column bigger">Địa Chỉ</th>
+<th class="column small">Giới tính</th>
+<th class="column small">Chỉnh sửa</th>
+
+
+</tr>
+
+</thead>
+{{#each data}}
+<table class="row_custom">
+    <thead>
+
+        <th class="column small stt"></th>
+        <th class="column small mssv">{{this.MSSV}}</th>
+
+        <th class="column bigger">{{this.name}}</th>
+
+        <th class="column bigger">{{this.address}}</th>
+        <th class="column small">{{this.sex}}</th>
+        <th class="column small"><a href="/change/profile/MSSV={{this.MSSV}}">Sửa</a>
+            <button type="button" class="btn btn-primary btn_delete" data-bs-toggle="modal"
+                data-bs-target="#Delete_button">
+                Xoá
+            </button>
+
+    </thead>
+
+<div id="Delete_button" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="body_text">Bạn có xác nhận muốn xoá sinh viên {{this.name}}  </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                <button class="btn btn-primary">Xoá</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {{/each}}
+
+</table>
+
+</div>
+</div>
+<div>
+    <a href="/create">Thêm sinh viên</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+<script>
+    var list = document.getElementsByClassName("stt");
+    var btn_delete = document.getElementsByClassName("btn_delete");
+
+    var text_delete = document.getElementsByClassName("body_text");
+    $(btn_delete[0]).click(function()
+        {
+            $(".body_text").innerHTML=data[0].name
+        })
+    console.log(btn_delete);
+    for (var i = 1; i <= list.length; i++) {
+        list[i - 1].innerHTML = i;
+       
+        
+    }
+</script>

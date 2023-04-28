@@ -1,0 +1,25 @@
+<div class="mt4">
+    <h2>Sửa sinh viên</h2>
+    <form method="POST" action="">
+    {{#each data}}
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">MSSV</label>
+            <input type="text" readonly name="MSSV" class="form-control" id="exampleInputPassword1"  value="{{this.MSSV}}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Name</label>
+            <input type="text"  name="name" class="form-control" id="exampleInputEmail1" value="{{this.name}}">
+        </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Địa Chỉ</label>
+            <input type="text" name="address" class="form-control" id="exampleInputPassword1"  value="{{this.address}}">
+        </div>
+           <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Giới Tính</label>
+            <input type="text" name="sex" class="form-control" id="exampleInputPassword1"  value="{{this.sex}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    {{/each}}
+
+    </form>
+</div>
