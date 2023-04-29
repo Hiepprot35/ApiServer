@@ -1,4 +1,4 @@
-     <link rel="stylesheet" href="/css/login.css">
+<link rel="stylesheet" href="/css/login.css">
 
 <body>
 
@@ -11,25 +11,27 @@
       <form action="/login" class="form_dn" method="POST">
 
         <div class="dangnhap_input_div">
-          <input onclick="click_img(label1,span1,input_tk)" type="text" name="MSSV" class="dangnhapinput--2"
-            value="" id="input_tk"><label onclick="click_img(label1,span1,input_tk)" for="hidden1" class="username"
+          <input onclick="click_img(label1,span1,input_tk)" type="text" name="MSSV" class="dangnhapinput--2" value=""
+            id="input_tk">
+            <label onclick="click_img(label1,span1,input_tk)" for="hidden1" class="username"
             id="label1">Tên người
             dùng</label>
           <span class="password" id="span1">Tên người
             dùng</span>
-         
-      </div>
+
+        </div>
         <div class="dangnhap_input_div">
           <input onclick="click_img(label2,span2,input_mk)" type="password" name="password" class="dangnhapinput--1"
-            value="" id="input_mk"><label onclick="click_img(label2,span2,input_mk)" for="hidden2" class="username"
+            value="" id="input_mk">
+            <label onclick="click_img(label2,span2,input_mk)" for="hidden2" class="username"
             id="label2">Mật khẩu</label> <span id="span2" class="password">Mật
             khẩu</span>
         </div>
-         {{#if message}}
-          <div class="">
-           <span class="validation">{{{message}}}  </span>
-          </div>
-          {{/if}}
+        {{#if message}}
+        <div class="">
+          <span class="validation">{{{message}}} </span>
+        </div>
+        {{/if}}
         <div class="forget_save_div">
 
           <div class="forget_pass">
@@ -43,10 +45,10 @@
         <div class="sumbit_button">
           <input type="submit" class="sumbit" id="sumbit_btn" value="Đăng nhập">
         </div>
-        </div>
-      </form>
-
     </div>
+    </form>
+
+  </div>
   </div>
 
 </body>
@@ -87,7 +89,6 @@
     })
 
   function click_img(label_evt, span_evt, input_evt) {
-    console.log(label_evt);
     label_evt.classList.add("change1");
     span_evt.classList.add("show1");
     input_evt.focus();
@@ -100,6 +101,7 @@
       label1.classList.remove("change1");
       span1.classList.remove("show1");
       input_tk.classList.remove("background_input")
+      console.log()
 
 
     }
@@ -116,6 +118,17 @@
       sumbit_btn.classList.add("sumbit_jsad");
       console.log("a")
       return;
+    }
+  });
+  document.addEventListener("keydown", function (event) {
+
+    if (event.keyCode == 9) {
+
+      var activeElement = document.activeElement;
+      if (activeElement.tagName === 'input') {
+        console.log("cac")
+
+      }
     }
   });
 </script>
