@@ -11,20 +11,19 @@
       <form action="/login" class="form_dn" method="POST">
 
         <div class="dangnhap_input_div">
-          <input onclick="click_img(label1,span1,input_tk)" type="text" name="MSSV" class="dangnhapinput--2" value=""
-            id="input_tk">
-            <label onclick="click_img(label1,span1,input_tk)" for="hidden1" class="username"
-            id="label1">Tên người
+          <input onclick="addCssClickIn(labelUserName,spanUsername,input_tk)" type="text" name="MSSV" class="dangnhapinput--2" value=""
+            id="input_tk" >
+          <label onclick="addCssClickIn(labelUserName,spanUsername,input_tk)" for="hidden1" class="username" id="labelUsername">Tên người
             dùng</label>
-          <span class="password" id="span1">Tên người
+          <span class="password" id="spanUsername">Tên người
             dùng</span>
 
         </div>
         <div class="dangnhap_input_div">
-          <input onclick="click_img(label2,span2,input_mk)" type="password" name="password" class="dangnhapinput--1"
+          <input  onclick="addCssClickIn(labelPassWord,spanPassWord,input_mk)" type="password" name="password" class="dangnhapinput--1"
             value="" id="input_mk">
-            <label onclick="click_img(label2,span2,input_mk)" for="hidden2" class="username"
-            id="label2">Mật khẩu</label> <span id="span2" class="password">Mật
+          <label onclick="addCssClickIn(labelPassWord,spanPassWord,input_mk)" for="hidden2" class="username" id="labelPassword">Mật khẩu</label>
+          <span id="spanPassword" class="password">Mật
             khẩu</span>
         </div>
         {{#if message}}
@@ -38,7 +37,7 @@
             <a href="" class="forget_pass_text">Quên mật khẩu</a>
           </div>
           <div class="checkbox_div">
-            <input type="checkbox"><span class="checkbox_mk">Lưu mật khẩu</span>
+            <input  type="checkbox"><span class="checkbox_mk">Lưu mật khẩu</span>
           </div>
         </div>
 
@@ -60,75 +59,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"
   integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-  const input_tk = document.getElementById("input_tk");
-  const input_mk = document.getElementById("input_mk");
-  const label1 = document.getElementById("label1")
-  const span1 = document.getElementById("span1")
-  const label2 = document.getElementById("label2")
-  const span2 = document.getElementById("span2")
-  const sumbit_btn = document.getElementById("sumbit_btn")
-  const myAP = new SplitType('#gsap_id')
-  gsap.to('.char',
-    {
-      y: 0,
-      stagger: 0.05,
-      delay: 0.2,
-      duration: .1,
-      opacity: 1
-
-    })
-  gsap.to('.dangnhap_input_div',
-    {
-      y: 0,
-      stagger: 0.05,
-      delay: 0.2,
-      duration: .1,
-      opacity: 1,
-
-    })
-
-  function click_img(label_evt, span_evt, input_evt) {
-    label_evt.classList.add("change1");
-    span_evt.classList.add("show1");
-    input_evt.focus();
-    input_evt.classList.add("background_input")
-  }
-  document.addEventListener("click", (evt) => {
-
-    let targetEl = evt.target;
-    if (targetEl != input_tk && targetEl != label1 && input_tk.value == "") {
-      label1.classList.remove("change1");
-      span1.classList.remove("show1");
-      input_tk.classList.remove("background_input")
-      console.log()
-
-
-    }
-    if (targetEl != input_mk && targetEl != label2 && input_mk.value == "") {
-      label2.classList.remove("change1");
-      span2.classList.remove("show1");
-      input_mk.classList.remove("background_input")
-    }
-
-  });
-  document.addEventListener("click", (e) => {
-    let sumbit_target = e.target;
-    if (sumbit_target == sumbit_btn) {
-      sumbit_btn.classList.add("sumbit_jsad");
-      console.log("a")
-      return;
-    }
-  });
-  document.addEventListener("keydown", function (event) {
-
-    if (event.keyCode == 9) {
-
-      var activeElement = document.activeElement;
-      if (activeElement.tagName === 'input') {
-        console.log("cac")
-
-      }
-    }
-  });
-</script>
+<script src="/js/login.js"></script>
