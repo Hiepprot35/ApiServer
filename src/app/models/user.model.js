@@ -3,17 +3,18 @@
 const object = require('../../ulti/object');
 const mysql = require('./db.model')
 const User = function (user) {
-    this.MSSV = user.MSSV;
+    this.Username = user.Username;
     this.password = user.password;
 
 }
 User.create = function (newUser) {
-    return new Promise(function () {
+    return new Promise(function (resolve, reject) {
 
         mysql.connection.query("Insert into users SET ?", newUser, (err, res) => {
             if (err) {
             }
             else {
+                resolve({message:"thành công"})
             }
 
         }
@@ -24,7 +25,7 @@ User.create = function (newUser) {
 User.findallUser = function () {
     return new Promise(function (resolve, reject) {
 
-        mysql.connection.query('Select * from users', (err, data) => {
+        mysql.connection.query('Select * from students', (err, data) => {
             if (err) {
             }
             else {
@@ -38,10 +39,11 @@ User.findallUser = function () {
 User.findId = function (User) {
     return new Promise(function (resolve, reject) {
 
-        mysql.connection.query('Select * from users where MSSV= ? and password= ? ', [User.MSSV,User.password], (err, result) => {
+        mysql.connection.query('Select * from users where Username= ? and password= ? ', [User.Username,User.password], (err, result) => {
             
             if (result)
             {
+                
                 
                 resolve(result)
             } 
@@ -57,7 +59,7 @@ User.findId = function (User) {
 User.saveChange = function (userInfo,MSSV) {
     return new Promise(function (resolve, reject) {
 
-        mysql.connection.query('update users set ? where MSSV =?', [userInfo,MSSV], (err, data) => {
+        mysql.connection.query('update users set ? where SDT =?', [userInfo,MSSV], (err, data) => {
             if (err) return reject(err)
             else {
                 resolve(data);

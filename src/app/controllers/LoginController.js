@@ -1,58 +1,107 @@
+
 const student = require('../models/user.model')
 const jwt = require('jsonwebtoken');
-const secretKey = 'mysecretkey';
+
 const expiresIn = 3600; // 1 giờ tính bằng giây
-
+require('dotenv').config()
 class LoginController {
-    authenticateToken(req, res, next) {
-        const authHeader = req.headers['Authorization'];
-        const token = authHeader && authHeader.split(' ')[1];
-        if (token == null) return res.render('login');
+     async authenticateToken(req, res, next) {
+        try {
 
-        jwt.verify(token, secretKey, (err, user) => {
-            if (err) return res.sendStatus(403);
-            req.user = user;
-            next();
-        });
-    }
-    login(req, res, next) {
-        res.send("cawc")
-        // res.render('login')
-    }
-    logincheck(req, res, next) {
-        const user={
+            var PrivateToken = req.cookies.token;
+            var isAdmin = req.cookies.admin;
 
-            MSSV:req.body.MSSV,
-            password:req.body.password
-        }
-        student.findId(user)
-            .then(function (result) {
-                if (result.length === 0) { // Nếu không tìm thấy user
-                    res.send( { message: 'Tên đăng nhập không tồn tại.' }); // Trả về trang đăng nhập với thông báo
-                } else {
+            var check = jwt.verify(PrivateToken, process.env.ACCESS_TOKEN_SECRET)
+            if (check) {
+                if (isAdmin == 1) {
+                    {
+                        const result = await student.findallUser()
 
-                    const token = jwt.sign({ MSSV: req.body.MSSV }, secretKey, { expiresIn });
-                    res.header('Authorization',  token);
-                    res.send(
-                        
-                        {
-                            user,
-                        "token" :token
-                });
+                        res.render('home',{data:result});
 
-                    // res.header('Authorization', 'Bearer ' + token).render('home', { data: result });
+                    }
+                }
+                if ( isAdmin != 1) {
 
+                    {
+                        res.render('lol')
 
-
+                    }
                 }
             }
-            )
-            .catch(function (error) {
-                res.send("Looix")
-                // console.log(error);
-                // res.render('login', { message: 'Có lỗi xảy ra, vui lòng thử lại.' }); // Trả về trang đăng nhập với thông báo
-            });
+            else {
+                res.send("Không tồn tại token")
+            }
+
+        }
+        catch (error) {
+            return res.render("login")
+        }
+    }
+    checkLogined(req, res, next) {
+        try {
+
+            var PrivateToken = req.cookies.token;
+            var isAdmin = req.cookies.admin;
+            var check = jwt.verify(PrivateToken, process.env.ACCESS_TOKEN_SECRET)
+            if (check) {
+              res.redirect('/')
+            }
+            else {
+                next();
+            }
+
+        }
+        catch (error) {
+            res.render("login")
+        }
+    }
+    login(req, res, next) {
+        res.render('login')
+    }
+    async logincheck(req, res, next) {
+        const user = {
+            Username: req.body.Username,
+            password: req.body.password
+        }
+        const result = await student.findId(user)
+
+        if (result.length == 0) {
+            res.send(user)
+
+        }
+        else {
+            const AccessToken = jwt.sign({ Username: req.body.Username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn });
+            res.cookie('token', AccessToken)
+            console.log(result)
+            res.cookie('admin', result[0]['isAdmin'])
+
+            if (result[0].isAdmin == 1) {
+                        const result = await student.findallUser()
+
+                res.render("home",{data:result })
+            }
+            if (result[0].isAdmin != 1) {
+                res.redirect("/")
+            }
+            // res.render("lol", { data: result })
+            // res.header('Authorization', 'Bearer ' + token).render('home', { data: result });
+        }
+    }
+
+
+
+    logout(req, res, next) {
+        try {
+            res.clearCookie('token');
+            res.redirect("login");
+        }
+        catch (err) {
+            res.redirect("login");
+        }
+
 
     }
 }
+
 module.exports = new LoginController();

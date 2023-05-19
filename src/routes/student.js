@@ -4,14 +4,18 @@ const studentController=require('../app/controllers/StudentController');
 const loginController=require('../app/controllers/LoginController');
 
 
-router.get('/create',studentController.create);
-router.post('/store',studentController.store);
+router.get('/dangky',studentController.createView);
+router.post('/store',studentController.createstudent);
 
-router.get('/login',loginController.login)
+router.get('/login',loginController.checkLogined,loginController.login)
 router.post('/login',loginController.logincheck)
+router.get('/logout',loginController.logout)
 
-router.get('/change/profile/MSSV=:id',studentController.findid);
-router.post('/change/profile/MSSV=:id',studentController.change);
+router.get('/getallstudent',studentController.getAllStudents)
+router.post('/createstudent',studentController.createstudent)
+
+// router.get('/change/profile/MSSV=:id',studentController.findid);
+// router.post('/change/profile/MSSV=:id',studentController.change);
 
 router.get('/',loginController.authenticateToken,studentController.index);
 

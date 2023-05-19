@@ -1,5 +1,6 @@
+
 <div class="mt-4">
-    <table class="row_custom header">
+    <table class="row_custom">
         <thead>
             <tr>
 
@@ -18,25 +19,25 @@
 
 </thead>
 {{#each data}}
-<table class="row_custom">
+<table class="">
     <thead>
 
         <th class="column small stt"></th>
-        <th class="column small mssv">{{this.MSSV}}</th>
+        <th class="column small mssv">{{this.Username}}</th>
 
-        <th class="column bigger">{{this.name}}</th>
+        <th class="column bigger">{{this.Sexual}}</th>
 
-        <th class="column bigger">{{this.address}}</th>
-        <th class="column small">{{this.sex}}</th>
-        <th class="column small"><a href="/change/profile/MSSV={{this.MSSV}}">Sửa</a>
-            <button type="button" class="btn btn-primary btn_delete" data-bs-toggle="modal"
+        <th class="column bigger">{{this.SDT}}</th>
+        <th class="column small">{{this.Email}}</th>
+        <th class="column small"><a href="/change/profile/MSSV={{this.SDT}}">Sửa</a>
+            {{!-- <button type="button" class="btn btn-primary btn_delete" data-bs-toggle="modal"
                 data-bs-target="#Delete_button">
                 Xoá
-            </button>
+            </button> --}}
 
     </thead>
 
-<div id="Delete_button" class="modal" tabindex="-1">
+{{!-- <div id="Delete_button" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,7 +53,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
     {{/each}}
 
@@ -61,7 +62,7 @@
 </div>
 </div>
 <div>
-    <a href="/create">Thêm sinh viên</a>
+    <a href="/dangky">Thêm sinh viên</a>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
     crossorigin="anonymous"></script>

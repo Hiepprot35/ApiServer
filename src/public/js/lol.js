@@ -143,7 +143,7 @@ $(list_button).on('click', function () {
     list_logo[count].childNodes[1].classList.toggle("click_logo")
 
     listnode.shift()
-    $(circle_show).css("left", 6.3 + count * 16.7 + "%");
+    $(circle_show).css("left", 6.2 + count * 16.7 + "%");
     $(circle_show).css("opacity", "1");
     $("logo_type_champion").children(".svg").css("fill", "black");
 
@@ -241,14 +241,16 @@ function loading() {
 }
 loading();
 function drawCircle(circle, progress, num) {
-    var end = point_start(progress, 0.5) * num;
-    var start = point_end(progress, 0.5) * num;
-    var end2 = point_start(progress, 1) * num;
-    var start2 = point_end(progress, 1) * num;
-    var end3 = point_start(progress, 1.5) * num;
-    var start3 = point_end(progress, 1.5) * num;
-    var end4 = point_start(progress, 2) * num;
-    var start4 = point_end(progress, 2) * num;
+    let myArray = [];
+
+    var end = PointEnd(progress, 0.5) * num;
+    var start = PointStart(progress, 0.5) * num;
+    var end2 = PointEnd(progress, 1) * num;
+    var start2 = PointStart(progress, 1) * num;
+    var end3 = PointEnd(progress, 1.5) * num;
+    var start3 = PointStart(progress, 1.5) * num;
+    var end4 = PointEnd(progress, 2) * num;
+    var start4 = PointStart(progress, 2) * num;
     ctx.lineWidth = 0.5;
     ctx.strokeStyle = "gray";
 
@@ -263,27 +265,21 @@ function drawCircle(circle, progress, num) {
         if (progress > 0.92 && progress < 2) {
             ctx.lineWidth = 2;
         }
+        
         ctx.beginPath();
         ctx.strokeStyle = "orange";
-
         ctx.arc(circle.center.x, circle.center.y, circle.radius, start * Math.PI, (end - 0.5) * Math.PI);
         ctx.restore()
         ctx.stroke();
 
-        ctx.beginPath();
-        ctx.arc(circle.center.x, circle.center.y, circle.radius, start2 * Math.PI, (end2 - 0.5) * Math.PI);
-        ctx.stroke();
-        ctx.restore()
-
-        ctx.beginPath();
-        ctx.arc(circle.center.x, circle.center.y, circle.radius, start3 * Math.PI, (end3 - 0.5) * Math.PI);
-        ctx.stroke();
-        ctx.restore()
-
-
-        ctx.beginPath();
-        ctx.arc(circle.center.x, circle.center.y, circle.radius, start4 * Math.PI, (end4 - 0.5) * Math.PI);
-        ctx.stroke();
+        for( let i = 2;i<5; i++)
+        {
+            ctx.beginPath();
+            ctx.arc(circle.center.x, circle.center.y, circle.radius, PointStart(progress, i*0.5) * num * Math.PI, (PointEnd(progress, i*0.5) * num - 0.5) * Math.PI);
+            ctx.stroke();
+            ctx.restore()
+        }
+   
     }
     if (progress == -99) {
 
@@ -292,32 +288,33 @@ function drawCircle(circle, progress, num) {
         ctx.beginPath();
         ctx.lineWidth = 3;
         ctx.strokeStyle = "orange";
+      
         ctx.arc(circle.center.x, circle.center.y, circle.radius, (start_click2) * Math.PI, end_click2 * Math.PI);
         ctx.restore()
         ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(circle.center.x, circle.center.y, circle.radius, (start_click2 - 0.5) * Math.PI, (end_click2 - 0.5) * Math.PI);
-        ctx.restore()
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(circle.center.x, circle.center.y, circle.radius, (start_click2 - 1.5) * Math.PI, (end_click2 - 1.5) * Math.PI);
-        ctx.restore()
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(circle.center.x, circle.center.y, circle.radius, (start_click2 - 1) * Math.PI, (end_click2 - 1) * Math.PI);
-        ctx.restore()
-        ctx.stroke();
+        for( let i = 1;i<5; i++)
+        {
+            ctx.beginPath();
+            ctx.arc(circle.center.x, circle.center.y, circle.radius, (start_click2 - i*0.5) * Math.PI, (end_click2 - i*0.5) * Math.PI);
+            ctx.restore()
+            ctx.stroke();
+        }
+        
     }
 }
 i = 0
+function CreateCtx(i)
+{
+
+}
 function x(x) {
     return x + 1;
 }
-function point_start(x, c) {
+function PointEnd(x, c) {
     return 2 * x * x - c;
 
 }
-function point_end(x, c) {
+function PointStart(x, c) {
     return 1.5 * x * x - 0.5 - c;
 }
 
@@ -334,7 +331,6 @@ const observer=new IntersectionObserver((entries)=>{
     entries.forEach((entry)=>
     {
 
-        console.log(entry)
         if(entry.isIntersecting)
         {
             entry.target.classList.add('show');
@@ -347,23 +343,7 @@ const observer=new IntersectionObserver((entries)=>{
     })
 })
 const hiddenElenments=document.querySelectorAll('.hidden');
+console.log(hiddenElenments)
 hiddenElenments.forEach((el)=>observer.observe(el));
 
 
-// function animate(element, destination, duration) {
-//   let start = performance.now();
-//   let distance = destination - element.offsetLeft;
-
-//   function step(timestamp) {
-//     let elapsed = timestamp - start;
-//     let progress = elapsed / duration;
-
-//     element.style.left = distance * progress + 'px';
-
-//     if (elapsed < duration) {
-//       requestAnimationFrame(step);
-//     }
-//   }
-
-//   requestAnimationFrame(step);
-// }

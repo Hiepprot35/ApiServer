@@ -1,24 +1,59 @@
 <div class="mt4">
-    <h2>Thêm sinh viên</h2>
-    <form method="POST" action="/store">
+  <h2>Thêm sinh viên</h2>
+  <form method="post" action="/store">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Name</label>
+      <input type="text" name="NameStudent" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+        <input type="file" name="avatar" />
 
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">MSSV</label>
-            <input type="text" name="MSSV" class="form-control" id="exampleInputPassword1">
-        </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Địa Chỉ</label>
-            <input type="text" name="address" class="form-control" id="exampleInputPassword1">
-        </div>
-           <select id="sex" name="sex">
-    <option value="Nữ">Nữ</option>
-    <option value="Nam">Nam</option>
-  </select>
-    
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email</label>
+      <input type="text" name="Email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">SDT</label>
+      <input type="text" name="SDT" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">BirthDate</label>
+      <input type="date" name="BirthDate" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
+      <input type="text" name="password" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div class="mb-3">
+      <span>Tên lớp</span>
+      <select name="ClassID">
+        {{#each classData}}
+        <option class="ClassID">{{this.NameClass}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="mb-3">
+      <span>Giới tính</span>
+      <select id="sex" name="Sexual">
+        <option value="0">Nữ</option>
+        <option value="1">Nam</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {{#if messagerp}}
+  <div class="my-alert">
+    {{messagerp}}
+  </div>
+  {{/if}}
+
 </div>
+<script>
+  const classID = document.getElementsByClassName('ClassID')
+  for (let i = 0; i < classID.length; i++) {
+    classID[i].value = i + 1;
+  }
+
+</script>
