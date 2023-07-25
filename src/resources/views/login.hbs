@@ -12,7 +12,6 @@
 
 <link rel="stylesheet" href="/css/login.css">
 
-<body>
 
   <div class="container" style="z-index: -1;">
     <div class="dangnhap_layer">
@@ -42,7 +41,7 @@
         </div>
         {{#if message}}
         <div class="">
-          <span class="validation">{{{message}}} </span>
+          <span class="validation warning">{{{message}}} </span>
         </div>
         {{/if}}
         <div class="forget_save_div">
@@ -77,3 +76,12 @@
   integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="/js/login.js"></script>
+<script>
+  const headerLayout=document.getElementsByClassName("header")
+  console.log(headerLayout)
+  window.addEventListener("scroll",(e)=>
+  {
+  console.log('Đã cuộn trang');
+  }
+  )
+</script>

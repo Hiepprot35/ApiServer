@@ -3,7 +3,7 @@
 const object = require('../../ulti/object');
 const mysql = require('./db.model')
 const User = function (user) {
-    this.Username = user.Username;
+    this.MSSV = user.MSSV;
     this.password = user.password;
 
 }
@@ -25,7 +25,7 @@ User.create = function (newUser) {
 User.findallUser = function () {
     return new Promise(function (resolve, reject) {
 
-        mysql.connection.query('Select * from students', (err, data) => {
+        mysql.connection.query('Select * from users', (err, data) => {
             if (err) {
             }
             else {
@@ -39,7 +39,7 @@ User.findallUser = function () {
 User.findId = function (User) {
     return new Promise(function (resolve, reject) {
 
-        mysql.connection.query('Select * from users where Username= ? and password= ? ', [User.Username,User.password], (err, result) => {
+        mysql.connection.query('Select * from users where MSSV  = ? and password= ? ', [User.MSSV,User.password], (err, result) => {
             
             if (result)
             {

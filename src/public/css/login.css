@@ -199,3 +199,12 @@
         font-size: 20px;
         color: BLACK;
     }
+    .warning
+    {
+        color: red !important;
+    }
+    .header
+    {
+        opacity: 0;
+    }
+ 
