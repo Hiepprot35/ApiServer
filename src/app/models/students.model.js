@@ -1,12 +1,12 @@
 
-const mySqlConnection = require('../models/db.model')
+const { connect, dbconnection } = require('../models/db.model')
 const Student = (studentInfo) => {
 
 
 }
 Student.getAllStudents = () => {
     return new Promise((resolve, reject) => {
-        mySqlConnection.connection.query("SELECT * FROM users", (error, allStudent) => {
+        dbconnection.query("SELECT * FROM users", (error, allStudent) => {
             if (error) {
                 reject(error)
             }
@@ -19,7 +19,7 @@ Student.getAllStudents = () => {
 }
 Student.getAllClassInfomation = () => {
     return new Promise((resolve, reject) => {
-        mySqlConnection.connection.query("Select * from Classes", (err, allClass) => {
+        dbconnection.query("Select * from Classes", (err, allClass) => {
             if (err) {
                 reject(err)
             }
@@ -31,8 +31,8 @@ Student.getAllClassInfomation = () => {
 }
 Student.getCountClass = (idClass) => {
     return new Promise((resolve, reject) => {
-        
-        mySqlConnection.connection.query("SELECT COUNT(*) FROM students WHERE ClassID LIKE ?", idClass
+
+        dbconnection.query("SELECT COUNT(*) FROM students WHERE ClassID LIKE ?", idClass
             , (err, CountStudent) => {
                 if (err) {
                     reject(err)
@@ -44,36 +44,50 @@ Student.getCountClass = (idClass) => {
     )
 }
 Student.store = (newStudent) => {
+    const hexString = newStudent.img; // Chuỗi hex cần chuyển đổi
+    const binaryData = Buffer.from(hexString, 'hex')
+     newStudent.img=binaryData
     return new Promise((resolve, reject) => {
-        mySqlConnection.connection.query("INSERT INTO users SET ?", newStudent, (err, result) => {
-            if (err) {
-                reject({ message: err })
-            }
-            else
-                resolve({ message: "Thành công" })
+        try{
 
-        })
-    })
-}
- Student.findId= (MSSV)=>
-{
-    return new Promise((resolve,reject)=>
-    {
-        mySqlConnection.connection.query("SELECT * FROM USERS WHERE MSSV= ?",MSSV,(err,result)=>{
-            if(err){
+          
+ 
+            
+            // const query = `INSERT INTO users (MSSV, Name, Address, Birthday, Sex, Class, img, create_at) VALUES 
+            // (${newStudent.MSSV}, ${newStudent.Name}, ${newStudent.Address}, ${escapedBirthday}, ${newStudent.Sex}, 
+            //     ${newStudent.Class}, ${newStudent.img}, ${escapedCreateAt})`;
+                
+                dbconnection.query("INSERT INTO users SET ?",newStudent, (err, result) => {
+                    if (err) {
+                        reject({ message: err });
+                    } else {
+                        resolve({ message: "Thành công" });
+                    }
+                });
+            }
+            catch(err)
+            {
+                console.log(err)
+            }
+            });
+        };
+        
+Student.findId = (MSSV) => {
+    return new Promise((resolve, reject) => {
+        dbconnection.query("SELECT * FROM USERS WHERE MSSV= ?", MSSV, (err, result) => {
+            if (err) {
                 reject(err)
 
             }
-            else 
-            resolve(result);
+            else
+                resolve(result);
         })
     })
 }
-Student.saveChange=(studentInfo,MSSV)=>
-{
+Student.saveChange = (studentInfo, MSSV) => {
     return new Promise(function (resolve, reject) {
 
-        mySqlConnection.connection.query('update users set ? where MSSV =?', [studentInfo,MSSV], (err, data) => {
+        dbconnection.query('update users set ? where MSSV =?', [studentInfo, MSSV], (err, data) => {
             if (err) return reject(err)
             else {
                 resolve(data);

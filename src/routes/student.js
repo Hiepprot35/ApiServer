@@ -1,5 +1,7 @@
 const express = require('express');
 var cors = require('cors')
+const multer = require('multer');
+const upload = multer(); // Tạo một instance của multer
 
 const router=express.Router();
 const studentController=require('../app/controllers/StudentController');
@@ -15,7 +17,7 @@ const loginController=require('../app/controllers/LoginController');
 router.post('/api/login',loginController.loginAPI)
 
 router.get('/getallstudent',cors(),studentController.getAllStudents)
-router.post('/api/createStudent',studentController.createstudent)
+router.post('/api/createStudent',upload.single('image'),studentController.createstudent)
 router.get('/api/getAllClass',studentController.getAllClassApi)
 
 // router.get('/change/profile/MSSV=:id',studentController.findid);

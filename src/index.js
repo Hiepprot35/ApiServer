@@ -3,9 +3,13 @@ const express = require('express')
 const port = 4000
 const app = express()
 var cors = require('cors')
+const bodyParser = require('body-parser');
+
 app.use(cors())
 
 var cookieParser = require('cookie-parser')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const handlebars = require('express-handlebars')
 //HTTP logger//

@@ -1,13 +1,13 @@
 const { model } = require('mongoose');
 const mysql=require('mysql')
 const dbConfig=require('../../config/db/data_sever')
-const connection=mysql.createConnection(dbConfig)
+const dbconnection=mysql.createConnection(dbConfig)
 async function connect()
 {
     try
     {
         
-        await connection.connect()
+        await dbconnection.connect()
         console.log("Success!")
 
     } catch(err)
@@ -17,5 +17,5 @@ async function connect()
 
 }
 module.exports={connect
-                ,connection
+                ,dbconnection
 }

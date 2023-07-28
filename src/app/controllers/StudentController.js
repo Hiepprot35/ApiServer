@@ -1,14 +1,15 @@
 const multer = require('multer');
-const storage =multer.memoryStorage();
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 // const upload = multer({ dest: 'uploads/' });
 const student = require('../models/students.model');
 const functionUse = require('./function/returndate');
-const fs=require('fs')
+const fs = require('fs')
 // Hàm xử lý khi nhận yêu cầu GET "/getAllStudents"
 async function getAllStudents(req, res, next) {
   try {
     const allStudents = await student.getAllStudents();
+
     res.send(allStudents);
   } catch (error) {
     res.json("Fail");
@@ -20,33 +21,39 @@ async function createstudent(req, res, next) {
   try {
     const d = new Date();
     const id = d.getTime();
-    // const returnID = await student.getCountClass(req.body.Class);
+    const img = req.body.img.data
+
+    const hhexString = img.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    const formData = req.body
     const new_student = {
-      MSSV: req.body.MSSV,
-      Name: req.body.Name,
-      Address: req.body.Address,
-      Birthday: req.body.Birthday,
-      Sex: req.body.Sex,
-      Class: req.body.Class,
-      img:req.body.img,
+      MSSV: formData.MSSV,
+      Name: formData.Name,
+      Address: formData.Address,
+      Birthday: formData.Birthday,
+      password: formData.password,
+      Class: formData.Class,
+      Sex: formData.Sex,
+
+      img: hhexString,
       create_at: functionUse.reuturndate(id)
-    };
+    }
+    console.log(req.body)
     await student.store(new_student);
     res.send("Thành công");
-  } catch (error) {
-    res.send(error)
+
+
+  } catch (err) {
+    res.send(err)
   }
 }
 
 async function getAllClassApi(req, res, next) {
-  
-  try
-  {
-  const getAllClass = await student.getAllClassInfomation();
-  res.send(getAllClass);
+
+  try {
+    const getAllClass = await student.getAllClassInfomation();
+    res.send(getAllClass);
   }
-  catch(error)
-  {
+  catch (error) {
     res.send(error)
   }
 }
@@ -143,9 +150,9 @@ async function change(req, res, next) {
           Sex: req.body.Sex,
           Class: req.body.Class,
           password: req.body.password,
-          img:imageFile.buffer
+          img: imageFile.buffer
         };
-       
+
         await student.saveChange(new_student, req.body.MSSV);
         console.log('Dữ liệu đã được lưu trữ thành công');
         res.redirect("/");
