@@ -1,21 +1,28 @@
 table {
-  width: 100%; }
+  width: 100%;
+}
 
 .rows_custom {
-  display: table; }
+  display: table;
+}
 
 .column {
   width: 20%;
   text-align: center;
   padding: 20px;
-  border: 1px solid black; }
+  border: 1px solid black;
+}
 
 .small {
-  width: 10%; }
+  width: 10%;
+}
 
 .bigger {
-  width: 30%; }
+  width: 30%;
+}
 
 a {
   text-decoration: none !important;
-  color: black; }
+  color: black;
+}
+

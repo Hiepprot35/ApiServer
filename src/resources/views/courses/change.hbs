@@ -1,25 +1,60 @@
 <div class="mt4">
     <h2>Sửa sinh viên</h2>
-    <form method="POST" action="">
-    {{#each data}}
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{#each data}}
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">MSSV</label>
-            <input type="text" readonly name="MSSV" class="form-control" id="exampleInputPassword1"  value="{{this.MSSV}}">
+            <input type="text" readonly name="MSSV" class="form-control" id="exampleInputPassword1"
+                value="{{this.MSSV}}">
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Name</label>
-            <input type="text"  name="name" class="form-control" id="exampleInputEmail1" value="{{this.name}}">
+            <input type="text" name="Name" class="form-control" id="exampleInputEmail1" value="{{this.Name}}">
         </div>
-          <div class="mb-3">
+        <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Địa Chỉ</label>
-            <input type="text" name="address" class="form-control" id="exampleInputPassword1"  value="{{this.address}}">
+            <input type="text" name="Address" class="form-control" id="exampleInputPassword1" value="{{this.Address}}">
         </div>
-           <div class="mb-3">
+        <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Giới Tính</label>
-            <input type="text" name="sex" class="form-control" id="exampleInputPassword1"  value="{{this.sex}}">
+            <input type="text" name="Sex" class="form-control" id="exampleInputPassword1" value="{{this.Sex}}">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    {{/each}}
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Lớp</label>
+            <input type="text" name="Class" class="form-control" id="exampleInputPassword1" value="{{this.Class}}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Mật Khẩu</label>
+            <input type="text" name="password" class="form-control" id="exampleInputPassword1"
+                value="{{this.password}}">
+        </div>
+        <div class="mb-3">
+            <img src="{{this.img}}" alt="Avatar" class="Avatar" id="imgAvatar">
+        <input type="file" name="image" accept='image/*' id="avatarInput" >
+        </div>
+        <input type="submit" class="btn btn-primary">Submit</input>
+        {{/each}}
 
     </form>
 </div>
+<script>
+    let objectDelete;
+    const inputAvatar = document.getElementById("avatarInput");
+    const imgAvatar = document.getElementById('imgAvatar');
+    let count = 0;
+    inputAvatar.addEventListener("change", (e) => {
+        if (count == 1) {
+            URL.revokeObjectURL(objectDelete)
+        }
+        const file = e.target.files[0];
+        const objectImg = URL.createObjectURL(file)
+        objectDelete = objectImg;
+        imgAvatar.src = objectImg;
+        imgAvatar.value = objectImg;
+        count = 1
+        console.log(imgAvatar.value)
+
+
+    })
+
+</script>

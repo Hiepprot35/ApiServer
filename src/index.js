@@ -2,7 +2,16 @@ const path = require('path')
 const express = require('express')
 const port = 4000
 const app = express()
+const cors = require('cors')
+const bodyParser = require('body-parser');
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }));
 var cookieParser = require('cookie-parser')
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const handlebars = require('express-handlebars')
 //HTTP logger//
@@ -19,6 +28,7 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.engine('.hbs', handlebars.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');

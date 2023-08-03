@@ -1,84 +1,70 @@
+<div class="home change">
 
-<div class="mt-4">
-    <table class="row_custom">
-        <thead>
+    <div>
+
+        <table>
             <tr>
 
-                <th class="column small stt_header">STT
-</div>
-<th class="column small mssv">MSSV</th>
+                <th>MSSV</th>
 
-<th class="column bigger">Tên</th>
+                <th>Tên</th>
 
-<th class="column bigger">Địa Chỉ</th>
-<th class="column small">Giới tính</th>
-<th class="column small">Chỉnh sửa</th>
+                <th>Gioi Tinh</th>
+                <th>Dia Chi</th>
+                <th>Lop</th>
+                <th>Mat khau</th>
+                <th> Avatar</th>
+                <th> Sửa</th>
+
+            </tr>
+            {{#each data}}
+
+            <tr>
+
+                <td>{{this.MSSV}}</td>
+                <td>{{this.Name}}</td>
+                <td>{{this.Sex}}</td>
+                <td>{{this.Address}}</td>
+
+                <td>{{this.Class}}</td>
+                <td>{{this.password}}</td>
+                <td> <img  class="Avatar" src="{{this.img}}"   /></td>
+                <td><a href="/change/profile/MSSV={{this.MSSV}}">Sửa</a>
+                    {{!-- <button type="button" class="btn btn-primary btn_delete" data-bs-toggle="modal"
+                        data-bs-target="#Delete_button">
+                        Xoá
+                    </button> --}}
+
+            </tr>
+            {{/each}}
+
+            {{!-- <div id="Delete_button" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thông báo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="body_text">Bạn có xác nhận muốn xoá sinh viên {{this.name}} </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                            <button class="btn btn-primary">Xoá</button>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+        </table>
 
 
-</tr>
-
-</thead>
-{{#each data}}
-<table class="">
-    <thead>
-
-        <th class="column small stt"></th>
-        <th class="column small mssv">{{this.Username}}</th>
-
-        <th class="column bigger">{{this.Sexual}}</th>
-
-        <th class="column bigger">{{this.SDT}}</th>
-        <th class="column small">{{this.Email}}</th>
-        <th class="column small"><a href="/change/profile/MSSV={{this.SDT}}">Sửa</a>
-            {{!-- <button type="button" class="btn btn-primary btn_delete" data-bs-toggle="modal"
-                data-bs-target="#Delete_button">
-                Xoá
-            </button> --}}
-
-    </thead>
-
-{{!-- <div id="Delete_button" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thông báo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p class="body_text">Bạn có xác nhận muốn xoá sinh viên {{this.name}}  </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                <button class="btn btn-primary">Xoá</button>
-            </div>
-        </div>
     </div>
-</div> --}}
-
-    {{/each}}
-
-</table>
+    <div>
+        <a href="/dangky">Thêm sinh viên</a>
+    </div>
 
 </div>
-</div>
-<div>
-    <a href="/dangky">Thêm sinh viên</a>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
-    crossorigin="anonymous"></script>
 <script>
-    var list = document.getElementsByClassName("stt");
-    var btn_delete = document.getElementsByClassName("btn_delete");
 
-    var text_delete = document.getElementsByClassName("body_text");
-    $(btn_delete[0]).click(function()
-        {
-            $(".body_text").innerHTML=data[0].name
-        })
-    console.log(btn_delete);
-    for (var i = 1; i <= list.length; i++) {
-        list[i - 1].innerHTML = i;
-       
-        
-    }
+
 </script>
