@@ -17,6 +17,19 @@ Student.getAllStudents = () => {
     }
     )
 }
+Student.getStudentByMSSV=(MSSV)=>
+{
+    return new Promise((resolve, reject) => {
+        dbconnection.query("SELECT * FROM USER WHERE MSSV= ?",[MSSV],(err,result)=>
+        {
+            if(err)
+            {
+                reject(err)
+            }
+            resolve(result)
+        })
+    })
+}
 Student.getAllClassInfomation = () => {
     return new Promise((resolve, reject) => {
         dbconnection.query("Select * from Classes", (err, allClass) => {
@@ -53,10 +66,6 @@ Student.store = (newStudent) => {
           
  
             
-            // const query = `INSERT INTO users (MSSV, Name, Address, Birthday, Sex, Class, img, create_at) VALUES 
-            // (${newStudent.MSSV}, ${newStudent.Name}, ${newStudent.Address}, ${escapedBirthday}, ${newStudent.Sex}, 
-            //     ${newStudent.Class}, ${newStudent.img}, ${escapedCreateAt})`;
-                
                 dbconnection.query("INSERT INTO users SET ?",newStudent, (err, result) => {
                     if (err) {
                         reject({ message: err });

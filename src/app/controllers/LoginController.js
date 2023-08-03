@@ -1,63 +1,81 @@
 
+const { user } = require('../../config/db/data_sever');
 const student = require('../models/user.model')
 const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
-
-const expiresIn = 10; // 1 giờ tính bằng giây
+const TimeAccessToken="10s"
+const TimeRefreshToken="1h"
 require('dotenv').config()
+
 class LoginController {
     async authenticateToken(req, res, next) {
         try {
+            const authHeader = req.headers['authorization'];
+            const token = authHeader && authHeader.split(' ')[1];
+            if (token === null) res.send(JSON.stringify({ error: true, message: "Không tồn tại token" }));
 
-            var PrivateToken = req.cookies.token;
-            var isAdmin = req.cookies.admin;
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+                if (err) return res.send(JSON.stringify({ error: true, message: "Hết phiên đăng nhập" }));
 
-            var check = jwt.verify(PrivateToken, process.env.ACCESS_TOKEN_SECRET)
-            if (check) {
-                if (isAdmin == 1) {
-                    {
-                        next();
-                    }
-                }
-                if (isAdmin != 1) {
-                    {
-                        next();
-                    }
-                }
-            }
-            else {
-                res.send("Không tồn tại token")
-            }
+                next()
+            })
+
 
         }
         catch (error) {
-            return res.render("login")
+            res.json(error)
         }
     }
-    async loginAPI(req,res,next)
-    {
+    async loginAPI(req, res, next) {
         const user = {
             MSSV: req.body.MSSV,
             password: req.body.password
+        };
+
+        try {
+            const result = await student.findId(user);
+            if (result.length === 0) {
+                return res.status(401).json({ error: true, message: "Không tìm thấy tài khoản hoặc mật khẩu không đúng." });
+            }
+
+            const AccessToken = jwt.sign({ MSSV: result.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
+            const RefreshToken = jwt.sign({ MSSV: result.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
+            res.cookie("tokenRefresh", RefreshToken);
+            res.send({"AccessToken": AccessToken,"expiresIn":TimeAccessToken });
+            
+        } catch (error) {
+            console.error(error);
+            res.send(error)
         }
-        const result = await student.findId(user)
-        if (result.length == 0) {
-            res.json('Sai tai khoan hoac mat khau')
+    }
+    async apiReFreshToken(req, res, next) {
+        const TokenRF = req.cookies.tokenRefresh;
 
+        if (!TokenRF) {
+            res.sendStatus(403)
         }
-        else {
-            const AccessToken = jwt.sign({ Username: req.body.Username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn });
-
-            res.send({"user":user,"token":AccessToken})
-
-
+        else
+        {
+            console.log("a")
+            console.log(TokenRF)
+            jwt.verify(TokenRF,process.env.REFRESH_TOKEN_SECRET,(err,user)=>
+            {
+                if(err) return res.sendStatus(403)
+                else
+                {
+                    const AccessToken2 = jwt.sign({ MSSV: user.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
+                    res.send({"AccessToken":AccessToken2,"expiresIn":TimeAccessToken})
+                }
+                
+            })
+            
         }
+            
     }
     checkLogined(req, res, next) {
         try {
 
             const PrivateToken = req.cookies.token;
-            const isAdmin = req.cookies.admin;
             const check = jwt.verify(PrivateToken, process.env.ACCESS_TOKEN_SECRET)
             if (check) {
                 res.redirect('/')
@@ -80,15 +98,15 @@ class LoginController {
             password: req.body.password
         }
         const result = await student.findId(user)
-        
+
         if (result.length == 0) {
-            res.render('login', { message :"Sai tài khoản hoặc mật khẩu"} )
+            res.render('login', { message: "Sai tài khoản hoặc mật khẩu" })
 
         }
         else {
             const AccessToken = jwt.sign({ Username: req.body.Username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn });
             res.cookie('token', AccessToken)
-
+            console.log(res.cookie)
             res.redirect("/")
 
 

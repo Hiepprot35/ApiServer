@@ -15,6 +15,16 @@ async function getAllStudents(req, res, next) {
     res.json("Fail");
   }
 }
+async function getStudentByMSSV(req,res,next)
+{
+  try {
+    const StudentByMSSV=await student.getStudentByMSSV();
+    res.send(StudentByMSSV)
+  } catch (error) {
+    res.json("Fail")
+    
+  }
+}
 
 // Hàm xử lý khi nhận yêu cầu POST "/createstudent"
 async function createstudent(req, res, next) {
@@ -172,5 +182,6 @@ module.exports = {
   store,
   findid,
   change,
-  getAllClassApi
+  getAllClassApi,
+  getStudentByMSSV
 };
