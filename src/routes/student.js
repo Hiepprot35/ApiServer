@@ -16,7 +16,7 @@ const loginController=require('../app/controllers/LoginController');
 // router.get('/logout',loginController.logout)
 router.post('/api/login',loginController.loginAPI)
 
-router.get('/getallstudent',cors(),studentController.getAllStudents)
+router.get('/getallstudent',studentController.getAllStudents)
 router.post('/api/createStudent',upload.single('image'),studentController.createstudent)
 router.get('/api/getAllClass',studentController.getAllClassApi)
 
