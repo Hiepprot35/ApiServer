@@ -4,7 +4,6 @@ const upload = multer({ storage: storage });
 // const upload = multer({ dest: 'uploads/' });
 const student = require('../models/students.model');
 const functionUse = require('./function/returndate');
-const fs = require('fs')
 // Hàm xử lý khi nhận yêu cầu GET "/getAllStudents"
 async function getAllStudents(req, res, next) {
   try {
@@ -13,6 +12,16 @@ async function getAllStudents(req, res, next) {
     res.send(allStudents);
   } catch (error) {
     res.json("Fail");
+  }
+}
+async function getStudentByMSSV(req,res,next)
+{
+  try {
+    const StudentByMSSV=await student.getStudentByMSSV();
+    res.send(StudentByMSSV)
+  } catch (error) {
+    res.json("Fail")
+    
   }
 }
 
@@ -121,6 +130,7 @@ async function findid(req, res, next) {
     if (result[0].img) {
       result[0].img = 'data:image/jpeg;base64,' + result[0].img.toString('base64');
     }
+    console.log(typeof(result))
     res.render('courses/change', { data: result });
   } catch (error) {
     res.render("/");
@@ -172,5 +182,6 @@ module.exports = {
   store,
   findid,
   change,
-  getAllClassApi
+  getAllClassApi,
+  getStudentByMSSV
 };
