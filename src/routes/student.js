@@ -8,7 +8,7 @@ const loginController=require('../app/controllers/LoginController');
 
 router.post('/api/login',loginController.loginAPI)
 router.get('/api/rfAccessToken',loginController.apiReFreshToken)
-
+router.post('/api/authentication',loginController.authenticateToken)
 router.get('/getallstudent',loginController.authenticateToken,studentController.getAllStudents)
 router.post('/api/createStudent',loginController.authenticateToken,upload.single('image'),studentController.createstudent)
 router.get('/api/getAllClass',studentController.getAllClassApi)

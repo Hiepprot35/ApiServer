@@ -48,7 +48,7 @@ async function createstudent(req, res, next) {
     }
     console.log(req.body)
     await student.store(new_student);
-    res.send("Thành công");
+    res.send(student);
 
 
   } catch (err) {

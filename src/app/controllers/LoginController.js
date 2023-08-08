@@ -18,7 +18,11 @@ class LoginController {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                 if (err) return res.status(401).json({ error: true, message: "Token đã hết hạn" });
 
-                next()
+                else
+                {
+                        res.status(200)
+                       next()
+                }
 
             })
 
@@ -66,7 +70,6 @@ class LoginController {
                     const AccessToken2 = jwt.sign({ MSSV: user.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
                     res.send({ "AccessToken": AccessToken2, "expiresIn": TimeAccessToken })
                 }
-
             })
 
         }
