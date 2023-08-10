@@ -31,24 +31,32 @@ async function createstudent(req, res, next) {
     const d = new Date();
     const id = d.getTime();
     const img = req.body.img.data
+    console.log("a")
 
-    const hhexString = img.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    const formData = req.body
-    const new_student = {
-      MSSV: formData.MSSV,
-      Name: formData.Name,
-      Address: formData.Address,
-      Birthday: formData.Birthday,
-      password: formData.password,
-      Class: formData.Class,
-      Sex: formData.Sex,
-
-      img: hhexString,
-      create_at: functionUse.reuturndate(id)
+    try
+    {
+      const hhexString = img.map(byte => byte.toString(16).padStart(2, '0')).join('');
+      const formData = req.body
+  
+      const new_student = {
+        MSSV: formData.MSSV,
+        Name: formData.Name,
+        Address: formData.Address,
+        Birthday: formData.Birthday,
+        password: formData.password,
+        Class: formData.Class,
+        Sex: formData.Sex,
+  
+        img: hhexString,
+        create_at: functionUse.reuturndate(id)
+      }
+      await student.store(new_student);
+      res.send(student);
     }
-    console.log(req.body)
-    await student.store(new_student);
-    res.send(student);
+ catch(error)
+ {
+  console.log(error)
+ }
 
 
   } catch (err) {
