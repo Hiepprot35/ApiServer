@@ -6,7 +6,7 @@ const dbconnection=mysql.createConnection(
         host: process.env.DB_host,
         user: process.env.DB_user,
         password:"",
-        port:"3300",
+        port:process.env.DB_port,
         database: process.env.DB_database
     }
 )
