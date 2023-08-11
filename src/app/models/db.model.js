@@ -5,7 +5,7 @@ const dbconnection=mysql.createConnection(
     {
         host: process.env.DB_host,
         user: process.env.DB_user,
-        password:"",
+        password:process.env.DB_password,
         port:3300,
         database: process.env.DB_database
     }
