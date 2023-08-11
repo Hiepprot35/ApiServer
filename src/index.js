@@ -6,7 +6,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://tuanhiep.netlify.app',
     credentials: true,
   }));
 var cookieParser = require('cookie-parser')
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Thay đổi URL nguồn gốc tùy theo ứng dụng React của bạn
+    res.header('Access-Control-Allow-Origin', 'https://tuanhiep.netlify.app'); // Thay đổi URL nguồn gốc tùy theo ứng dụng React của bạn
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();

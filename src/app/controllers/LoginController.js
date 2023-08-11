@@ -3,7 +3,7 @@ const { user } = require('../../config/db/data_sever');
 const student = require('../models/user.model')
 const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
-const TimeAccessToken = "1s"
+const TimeAccessToken = "5m"
 const TimeRefreshToken = "1d"
 require('dotenv').config()
 
