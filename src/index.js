@@ -2,13 +2,12 @@ const path = require('path')
 require('dotenv').config()
 
 const express = require('express')
-const port = process.env.DB_port
+const port = process.env.APP_port
 const app = express()
-const cors = require('cors')
 const bodyParser = require('body-parser');
 
 app.use(cors({
-    origin: 'https://tuanhiep.netlify.app',
+    origin: 'http://localhost:3000',
     credentials: true,
   }));
 var cookieParser = require('cookie-parser')
@@ -24,13 +23,12 @@ db.connect()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'https://tuanhiep.netlify.app'); // Thay đổi URL nguồn gốc tùy theo ứng dụng React của bạn
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: 'GET, POST, PUT, DELETE',
+  allowedHeaders: 'Content-Type, Authorization',
+  credentials: true
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.engine('.hbs', handlebars.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
