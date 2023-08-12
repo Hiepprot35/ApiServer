@@ -56,6 +56,20 @@ User.findId = function (User) {
         )
     })
 }
+User.getRFToken=function(MSSV)
+{
+    return new Promise((resolve, reject) => {
+        dbconnection.query('select RefreshToken from users where MSSV=?',[MSSV],(err,token)=>
+        {
+            if(err) return reject(err)
+            else
+        {
+
+            resolve(token)
+        }
+        })
+    })
+}
 User.saveChange = function (userInfo,MSSV) {
     return new Promise(function (resolve, reject) {
 

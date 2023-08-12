@@ -1,6 +1,7 @@
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const jwt = require('jsonwebtoken');
 // const upload = multer({ dest: 'uploads/' });
 const student = require('../models/students.model');
 const functionUse = require('./function/returndate');
@@ -8,7 +9,6 @@ const functionUse = require('./function/returndate');
 async function getAllStudents(req, res, next) {
   try {
     const allStudents = await student.getAllStudents();
-
     res.send(allStudents);
   } catch (error) {
     res.json("Fail");
@@ -31,12 +31,13 @@ async function createstudent(req, res, next) {
     const d = new Date();
     const id = d.getTime();
     const img = req.body.img.data
-    console.log("a")
+    const formData = req.body
 
+    const RefreshToken= jwt.sign({ MSSV: formData.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
+    console.log("OKE")
     try
     {
-      const hhexString = img.map(byte => byte.toString(16).padStart(2, '0')).join('');
-      const formData = req.body
+      const hhexString = img && img.map(byte => byte.toString(16).padStart(2, '0')).join('');
   
       const new_student = {
         MSSV: formData.MSSV,
@@ -46,12 +47,12 @@ async function createstudent(req, res, next) {
         password: formData.password,
         Class: formData.Class,
         Sex: formData.Sex,
-  
-        img: hhexString,
+        RefreshToken:RefreshToken,
+        img: hhexString || "img",
         create_at: functionUse.reuturndate(id)
       }
-      await student.store(new_student);
-      res.send(student);
+      const message=await student.store(new_student);
+     res.status(200)
     }
  catch(error)
  {

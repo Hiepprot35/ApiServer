@@ -70,7 +70,7 @@ Student.store = (newStudent) => {
                     if (err) {
                         reject({ message: err });
                     } else {
-                        resolve({ message: "Thành công" });
+                        resolve(result);
                     }
                 });
             }
@@ -93,6 +93,7 @@ Student.findId = (MSSV) => {
         })
     })
 }
+
 Student.saveChange = (studentInfo, MSSV) => {
     return new Promise(function (resolve, reject) {
 

@@ -1,6 +1,7 @@
 
 const { user } = require('../../config/db/data_sever');
 const student = require('../models/user.model')
+
 const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
 const TimeAccessToken = "1s"
@@ -67,8 +68,8 @@ class LoginController {
 
             const AccessToken = jwt.sign({ MSSV: result.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
             const RefreshToken = jwt.sign({ MSSV: result.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
-            res.cookie("tokenRefresh", RefreshToken);
-            res.send({ "user": result, "AccessToken": AccessToken, "expiresIn": TimeAccessToken });
+          res.cookie("RefreshToken",RefreshToken)
+            res.send({ "user": result, "AccessToken": AccessToken, "expiresIn": TimeAccessToken ,"RefreshToken":RefreshToken});
 
         } catch (error) {
             console.error(error);
@@ -76,15 +77,19 @@ class LoginController {
         }
     }
     async apiReFreshToken(req, res, next) {
-        const TokenRF = req.cookies.tokenRefresh;
+        const MSSV = req.headers['mssv'];
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-        if (!TokenRF) {
-            res.status(403)
+        const getToken=await student.getRFToken(MSSV)
+        const RefreshToken=getToken[0].RefreshToken
+        console.log(getToken[0].RefreshToken)
+        if (!RefreshToken) {
+            res.status(403).json("đmm")
         }
         else {
 
-            jwt.verify(TokenRF, process.env.REFRESH_TOKEN_SECRET, (err, user1) => {
+            jwt.verify(RefreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user1) => {
+                console.log("a")
                 if (err) return res.status(403)
                 else {
                     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
@@ -92,8 +97,7 @@ class LoginController {
                             const AccessToken2 = jwt.sign({ MSSV: user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
                             res.status(401).send({ "AccessToken": AccessToken2, "expiresIn": TimeAccessToken })
                         }
-                        else
-                        {
+                        else {
                             res.status(200).json("Token thỏa mãn")
                         }
                     })
