@@ -80,9 +80,8 @@ class LoginController {
         const MSSV = req.headers['mssv'];
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-        const getToken=await student.getRFToken(MSSV)
-        const RefreshToken=getToken[0].RefreshToken
-        console.log(getToken[0].RefreshToken)
+        // const getToken=await student.getRFToken(MSSV)
+        const RefreshToken=req.cookies.RefreshToken
         if (!RefreshToken) {
             res.status(403).json("đmm")
         }
