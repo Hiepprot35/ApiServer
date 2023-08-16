@@ -16,15 +16,12 @@ class functionUse {
     console.log(currentDate)
     return currentDate;
 }
- reuturnID(ClassID,index) {
-    if(ClassID==1)
-    {
-        const id=`25${index+1}`
-        const num = parseInt(id); // num sẽ có giá trị là NaN
+ reuturnID(KhoaID,ClassID,index) {
+        let id;
+        id=`SV${KhoaID}00${ClassID}00${index+1}`
 
-        return  num
-    }
-
+        return  id
+   
 
 }
 

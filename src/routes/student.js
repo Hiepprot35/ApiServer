@@ -10,10 +10,12 @@ router.post('/api/login',loginController.loginAPI)
 router.post('/api/rfAccessToken',loginController.apiReFreshToken)
 router.post('/api/authentication',loginController.test)
 router.get('/api/cac',studentController.getAllStudents)
+router.get('/api/profile/:id',studentController.getStudentByMSSV)
 
 router.get('/getallstudent',loginController.authenticateToken,studentController.getAllStudents)
-router.post('/api/createStudent',loginController.authenticateToken,upload.single('image'),studentController.createstudent)
+router.post('/api/createStudent',upload.single('image'),studentController.createstudent)
 router.get('/api/getAllClass',studentController.getAllClassApi)
+router.get('/api/getAllKhoa',studentController.getAllKhoaApi)
 
 
 

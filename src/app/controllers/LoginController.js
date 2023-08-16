@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
 const TimeAccessToken = "1s"
 const TimeRefreshToken = "1d"
+let id;
 require('dotenv').config()
 
 class LoginController {
@@ -56,45 +57,47 @@ class LoginController {
     }
     async loginAPI(req, res, next) {
         const user = {
-            MSSV: req.body.MSSV,
+            MSSV: req.body.username,
             password: req.body.password
         };
 
         try {
             const result = await student.findId(user);
-            if (result.length === 0) {
+            
+            if (!result) {
                 return res.status(401).json({ error: true, message: "Không tìm thấy tài khoản hoặc mật khẩu không đúng." });
             }
 
-            const AccessToken = jwt.sign({ MSSV: result.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
-            const RefreshToken = jwt.sign({ MSSV: result.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
-          res.cookie("RefreshToken",RefreshToken)
-            res.send({ "user": result, "AccessToken": AccessToken, "expiresIn": TimeAccessToken ,"RefreshToken":RefreshToken});
+            else {
+                id=result.RoleID
+                const AccessToken = jwt.sign({ MSSV: result.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
+                const RefreshToken = jwt.sign({ MSSV: result.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
+                res.cookie("RefreshToken", RefreshToken)
+                res.status(200).send({ "UserID": result.UserID,"Role":result.RoleID, "AccessToken": AccessToken, "expiresIn": TimeAccessToken, "RefreshToken": RefreshToken });
 
+            }
         } catch (error) {
             console.error(error);
             res.send(error)
         }
     }
     async apiReFreshToken(req, res, next) {
-        const MSSV = req.headers['mssv'];
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         // const getToken=await student.getRFToken(MSSV)
-        const RefreshToken=req.cookies.RefreshToken
+        const RefreshToken = req.cookies.RefreshToken
         if (!RefreshToken) {
             res.status(403).json("đmm")
         }
         else {
 
             jwt.verify(RefreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user1) => {
-                console.log("a")
                 if (err) return res.status(403)
                 else {
                     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                         if (err) {
                             const AccessToken2 = jwt.sign({ MSSV: user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
-                            res.status(401).send({ "AccessToken": AccessToken2, "expiresIn": TimeAccessToken })
+                            res.status(401).send({ "RoleID":1,"AccessToken": AccessToken2, "expiresIn": TimeAccessToken })
                         }
                         else {
                             res.status(200).json("Token thỏa mãn")

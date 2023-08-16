@@ -10,8 +10,9 @@ const User = function (user) {
 User.create = function (newUser) {
     return new Promise(function (resolve, reject) {
 
-        dbconnection.query("Insert into users SET ?", newUser, (err, res) => {
+        dbconnection.query("Insert into username SET ?", newUser, (err, res) => {
             if (err) {
+                reject(err)
             }
             else {
                 resolve({message:"thành công"})
@@ -36,10 +37,10 @@ User.findallUser = function () {
         );
     })
 }
-User.findId = function (User) {
-    return new Promise(function (resolve, reject) {
+User.findId = async function (User) {
+    const userInfo=await new Promise(function (resolve, reject) {
 
-        dbconnection.query('Select * from users where MSSV  = ? and password= ? ', [User.MSSV,User.password], (err, result) => {
+        dbconnection.query('Select * from username where username  = ? and password= ? ', [User.MSSV,User.password], (err, result) => {
             
             if (result)
             {
@@ -55,10 +56,11 @@ User.findId = function (User) {
         }
         )
     })
+    return userInfo[0]
 }
-User.getRFToken=function(MSSV)
+User.getRFToken= async function(MSSV)
 {
-    return new Promise((resolve, reject) => {
+    const RFToken= await new Promise((resolve, reject) => {
         dbconnection.query('select RefreshToken from users where MSSV=?',[MSSV],(err,token)=>
         {
             if(err) return reject(err)
@@ -68,6 +70,7 @@ User.getRFToken=function(MSSV)
             resolve(token)
         }
         })
+        return RFToken[0]
     })
 }
 User.saveChange = function (userInfo,MSSV) {

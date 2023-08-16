@@ -20,7 +20,7 @@ Student.getAllStudents = () => {
 Student.getStudentByMSSV=(MSSV)=>
 {
     return new Promise((resolve, reject) => {
-        dbconnection.query("SELECT * FROM USER WHERE MSSV= ?",[MSSV],(err,result)=>
+        dbconnection.query("SELECT * FROM username WHERE username= ?",[MSSV],(err,result)=>
         {
             if(err)
             {
@@ -42,20 +42,35 @@ Student.getAllClassInfomation = () => {
     }
     )
 }
-Student.getCountClass = (idClass) => {
+Student.getAllKhoaInfomation = () => {
     return new Promise((resolve, reject) => {
-
-        dbconnection.query("SELECT COUNT(*) FROM students WHERE ClassID LIKE ?", idClass
-            , (err, CountStudent) => {
-                if (err) {
-                    reject(err)
-                }
-                else
-                    resolve(CountStudent)
-            })
+        dbconnection.query("Select * from Khoa", (err, allKhoa) => {
+            if (err) {
+                reject(err)
+            }
+            else
+                resolve(allKhoa)
+        })
     }
     )
 }
+Student.getCountClass = async (idClass) => {
+    try {
+        const CountStudent = await new Promise((resolve, reject) => {
+            dbconnection.query("SELECT COUNT(*) FROM users WHERE Class LIKE ?", idClass, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return CountStudent[0]['COUNT(*)'];
+    } catch (error) {
+        throw error;
+    }
+};
 Student.store = (newStudent) => {
     const hexString = newStudent.img; // Chuỗi hex cần chuyển đổi
     const binaryData = Buffer.from(hexString, 'hex')

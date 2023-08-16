@@ -4,6 +4,8 @@ const upload = multer({ storage: storage });
 const jwt = require('jsonwebtoken');
 // const upload = multer({ dest: 'uploads/' });
 const student = require('../models/students.model');
+const User = require('../models/user.model');
+
 const functionUse = require('./function/returndate');
 // Hàm xử lý khi nhận yêu cầu GET "/getAllStudents"
 async function getAllStudents(req, res, next) {
@@ -16,11 +18,12 @@ async function getAllStudents(req, res, next) {
 }
 async function getStudentByMSSV(req,res,next)
 {
+  console.log(req.params)
   try {
-    const StudentByMSSV=await student.getStudentByMSSV();
+    const StudentByMSSV=await student.getStudentByMSSV(req.params.id);
     res.send(StudentByMSSV)
   } catch (error) {
-    res.json("Fail")
+    res.json(error)
     
   }
 }
@@ -38,20 +41,29 @@ async function createstudent(req, res, next) {
     try
     {
       const hhexString = img && img.map(byte => byte.toString(16).padStart(2, '0')).join('');
-  
+      const count =await student.getCountClass(formData.Class)
+      console.log(count)
       const new_student = {
-        MSSV: formData.MSSV,
+        MSSV:functionUse.reuturnID(formData.Khoa,formData.Class,count),
         Name: formData.Name,
         Address: formData.Address,
         Birthday: formData.Birthday,
-        password: formData.password,
+        SDT:formData.SDT,
+        Khoa:formData.Khoa,
         Class: formData.Class,
         Sex: formData.Sex,
-        RefreshToken:RefreshToken,
         img: hhexString || "img",
         create_at: functionUse.reuturndate(id)
       }
+      const newUser={
+        username:new_student.MSSV,
+        password:new_student.SDT,
+        RefreshToken:RefreshToken,
+        RoleID:2,
+        create_at:functionUse.reuturndate(id)
+      }
       const message=await student.store(new_student);
+      const createUser =await User.create(newUser)
      res.status(200)
     }
  catch(error)
@@ -70,6 +82,16 @@ async function getAllClassApi(req, res, next) {
   try {
     const getAllClass = await student.getAllClassInfomation();
     res.send(getAllClass);
+  }
+  catch (error) {
+    res.send(error)
+  }
+}
+async function getAllKhoaApi(req, res, next) {
+
+  try {
+    const getAllKhoa = await student.getAllKhoaInfomation();
+    res.send(getAllKhoa);
   }
   catch (error) {
     res.send(error)
@@ -136,8 +158,8 @@ async function store(req, res, next) {
 async function findid(req, res, next) {
   try {
     const result = await student.findId(req.params.id);
-    if (result[0].img) {
-      result[0].img = 'data:image/jpeg;base64,' + result[0].img.toString('base64');
+    if (result.img) {
+      result.img = 'data:image/jpeg;base64,' + result.img.toString('base64');
     }
     console.log(typeof(result))
     res.render('courses/change', { data: result });
@@ -192,5 +214,6 @@ module.exports = {
   findid,
   change,
   getAllClassApi,
-  getStudentByMSSV
+  getStudentByMSSV,
+  getAllKhoaApi
 };
