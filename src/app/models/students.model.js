@@ -17,10 +17,10 @@ Student.getAllStudents = () => {
     }
     )
 }
-Student.getStudentByMSSV=(MSSV)=>
+Student.getStudentByMSSV= async (MSSV)=>
 {
-    return new Promise((resolve, reject) => {
-        dbconnection.query("SELECT * FROM username WHERE username= ?",[MSSV],(err,result)=>
+    const data=await new Promise((resolve, reject) => {
+        dbconnection.query("SELECT * FROM users WHERE MSSV = ?",[MSSV],(err,result)=>
         {
             if(err)
             {
@@ -29,10 +29,11 @@ Student.getStudentByMSSV=(MSSV)=>
             resolve(result)
         })
     })
+    return data[0]
 }
 Student.getAllClassInfomation = () => {
     return new Promise((resolve, reject) => {
-        dbconnection.query("Select * from Classes", (err, allClass) => {
+        dbconnection.query("Select * from classes", (err, allClass) => {
             if (err) {
                 reject(err)
             }
@@ -44,7 +45,7 @@ Student.getAllClassInfomation = () => {
 }
 Student.getAllKhoaInfomation = () => {
     return new Promise((resolve, reject) => {
-        dbconnection.query("Select * from Khoa", (err, allKhoa) => {
+        dbconnection.query("Select * from khoa", (err, allKhoa) => {
             if (err) {
                 reject(err)
             }

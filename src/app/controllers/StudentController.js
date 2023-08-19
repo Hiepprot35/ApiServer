@@ -16,60 +16,71 @@ async function getAllStudents(req, res, next) {
     res.json("Fail");
   }
 }
-async function getStudentByMSSV(req,res,next)
-{
-  console.log(req.params)
+async function getStudentByMSSV(req, res, next) {
   try {
-    const StudentByMSSV=await student.getStudentByMSSV(req.params.id);
-    res.send(StudentByMSSV)
+    if(req.body.username==="admin")
+    {
+      res.status(200).json("Admin")
+    }
+    else
+    {
+
+      const StudentByMSSV = await student.getStudentByMSSV(req.body.username);
+      res.status(200).send(StudentByMSSV)
+    }
   } catch (error) {
     res.json(error)
-    
+    res.status(402)
+
   }
+  console.log("a")
 }
 
 // Hàm xử lý khi nhận yêu cầu POST "/createstudent"
 async function createstudent(req, res, next) {
+  console.log("OKE")
+
   try {
     const d = new Date();
     const id = d.getTime();
     const img = req.body.img.data
+    console.log(req.body.img.data)
     const formData = req.body
 
-    const RefreshToken= jwt.sign({ MSSV: formData.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
+    const RefreshToken = jwt.sign({ MSSV: formData.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
     console.log("OKE")
-    try
-    {
+    try {
       const hhexString = img && img.map(byte => byte.toString(16).padStart(2, '0')).join('');
-      const count =await student.getCountClass(formData.Class)
+      const count = await student.getCountClass(formData.Class)
       console.log(count)
       const new_student = {
-        MSSV:functionUse.reuturnID(formData.Khoa,formData.Class,count),
+        MSSV: functionUse.reuturnID(formData.Khoa, formData.Class, count),
         Name: formData.Name,
         Address: formData.Address,
         Birthday: formData.Birthday,
-        SDT:formData.SDT,
-        Khoa:formData.Khoa,
+        SDT: formData.SDT,
+        Khoa: formData.Khoa,
         Class: formData.Class,
         Sex: formData.Sex,
         img: hhexString || "img",
+        create_by:formData.create_by,
         create_at: functionUse.reuturndate(id)
       }
-      const newUser={
-        username:new_student.MSSV,
-        password:new_student.SDT,
-        RefreshToken:RefreshToken,
-        RoleID:2,
-        create_at:functionUse.reuturndate(id)
+      const newUser = {
+
+        username: new_student.MSSV,
+        password: new_student.SDT,
+        RefreshToken: RefreshToken,
+        RoleID: 2,
+        create_at: functionUse.reuturndate(id)
       }
-      const message=await student.store(new_student);
-      const createUser =await User.create(newUser)
-     res.status(200)
+      const message = await student.store(new_student);
+      const createUser = await User.create(newUser)
+      res.status(200)
     }
- catch(error)
- {
-  console.log(error)
- }
+    catch (error) {
+      console.log(error)
+    }
 
 
   } catch (err) {
@@ -161,7 +172,6 @@ async function findid(req, res, next) {
     if (result.img) {
       result.img = 'data:image/jpeg;base64,' + result.img.toString('base64');
     }
-    console.log(typeof(result))
     res.render('courses/change', { data: result });
   } catch (error) {
     res.render("/");

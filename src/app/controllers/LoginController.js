@@ -1,10 +1,11 @@
 
 const { user } = require('../../config/db/data_sever');
+const { use } = require('../../routes/student');
 const student = require('../models/user.model')
 
 const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
-const TimeAccessToken = "1s"
+const TimeAccessToken = "10m"
 const TimeRefreshToken = "1d"
 let id;
 require('dotenv').config()
@@ -31,6 +32,28 @@ class LoginController {
         }
         catch (error) {
             res.send(error)
+        }
+    }
+    async checkRefreshToken(req, res, next) {
+        try {
+            const RefreshToken = req.body.RefreshToken;
+            if (!RefreshToken) {
+                return res.status(401).json("Chưa đăng nhập")
+            }
+            else {
+                jwt.verify(RefreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                    if (err) return res.status(403).json("Token không được xác thực")
+
+                    else {
+                        return res.status(200).json("OK")
+                    }
+                }
+                )
+            }
+
+        }
+        catch (err) {
+            console.log(err)
         }
     }
     async test(req, res, next) {
@@ -63,17 +86,16 @@ class LoginController {
 
         try {
             const result = await student.findId(user);
-            
             if (!result) {
                 return res.status(401).json({ error: true, message: "Không tìm thấy tài khoản hoặc mật khẩu không đúng." });
             }
 
             else {
-                id=result.RoleID
-                const AccessToken = jwt.sign({ MSSV: result.MSSV }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
-                const RefreshToken = jwt.sign({ MSSV: result.MSSV }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
+                id = result.RoleID
+                const AccessToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
+                const RefreshToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
                 res.cookie("RefreshToken", RefreshToken)
-                res.status(200).send({ "UserID": result.UserID,"Role":result.RoleID, "AccessToken": AccessToken, "expiresIn": TimeAccessToken, "RefreshToken": RefreshToken });
+                res.status(200).send({ "UserID": result.UserID,"Username":result.username, "Role": result.RoleID, "AccessToken": AccessToken, "expiresIn": TimeAccessToken, "RefreshToken": RefreshToken });
 
             }
         } catch (error) {
@@ -84,26 +106,29 @@ class LoginController {
     async apiReFreshToken(req, res, next) {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-        // const getToken=await student.getRFToken(MSSV)
-        const RefreshToken = req.cookies.RefreshToken
+        const RefreshToken = req.cookies.RefreshToken || req.body.RefreshToken;
+
         if (!RefreshToken) {
             res.status(403).json("đmm")
         }
         else {
 
-            jwt.verify(RefreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user1) => {
+            jwt.verify(RefreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user1) => {
                 if (err) return res.status(403)
                 else {
+
+                    
+                    // const result =await 
                     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                         if (err) {
-                            const AccessToken2 = jwt.sign({ MSSV: user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
-                            res.status(401).send({ "RoleID":1,"AccessToken": AccessToken2, "expiresIn": TimeAccessToken })
+                            const AccessToken2 = jwt.sign({"UserID":user1.UserID,"Username":user1.Username,"Role":user1.Role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
+                            res.status(200).send({"UserID":user1.UserID,"Username":user1.Username,"Role":user1.Role,"AccessToken": AccessToken2, "expiresIn": TimeAccessToken })
                         }
                         else {
-                            res.status(200).json("Token thỏa mãn")
+                            res.status(200).send({"UserID":user.UserID,"Username":user1.Username,"Role":user.Role,"AccessToken": token, "expiresIn": TimeAccessToken })
                         }
-                    })
 
+                    })
                 }
             })
 

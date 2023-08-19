@@ -37,6 +37,12 @@ User.findallUser = function () {
         );
     })
 }
+User.findUsername=async function(userID)
+{
+    const user=await new Promise((resolve, reject) => {
+        dbconnection.query
+    })
+}
 User.findId = async function (User) {
     const userInfo=await new Promise(function (resolve, reject) {
 
