@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
 const TimeAccessToken = "10m"
 const TimeRefreshToken = "1d"
-let id;
 require('dotenv').config()
 
 class LoginController {

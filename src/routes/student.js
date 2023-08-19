@@ -4,7 +4,7 @@ const upload = multer(); // Tạo một instance của multer
 const router=express.Router();
 const studentController=require('../app/controllers/StudentController');
 const loginController=require('../app/controllers/LoginController');
-
+const classController=require('../app/controllers/ClassController')
 
 router.post('/api/login',loginController.loginAPI)
 router.post('/api/rfAccessToken',loginController.apiReFreshToken)
@@ -17,7 +17,7 @@ router.post('/api/createStudent',upload.single('image'),studentController.create
 router.get('/api/getAllClass',studentController.getAllClassApi)
 router.get('/api/getAllKhoa',studentController.getAllKhoaApi)
 
-
+router.post('/api/getClassMonHoc',classController.getClassMonHoc)
 
 
 module.exports=router;
