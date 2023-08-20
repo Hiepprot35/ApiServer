@@ -19,5 +19,7 @@ router.get('/api/getAllKhoa',studentController.getAllKhoaApi)
 
 router.post('/api/getClassMonHoc',classController.getClassMonHoc)
 
+router.get('/api/getMonHoc',classController.getAllMonHoc)
+router.post('/api/dangkihoc',classController.DangKyLopHoc)
 
 module.exports=router;

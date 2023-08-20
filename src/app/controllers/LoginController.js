@@ -90,7 +90,7 @@ class LoginController {
             }
 
             else {
-                id = result.RoleID
+                let id = result.RoleID
                 const AccessToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
                 const RefreshToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
                 res.cookie("RefreshToken", RefreshToken)

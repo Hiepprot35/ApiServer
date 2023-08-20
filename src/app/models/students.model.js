@@ -17,13 +17,10 @@ Student.getAllStudents = () => {
     }
     )
 }
-Student.getStudentByMSSV= async (MSSV)=>
-{
-    const data=await new Promise((resolve, reject) => {
-        dbconnection.query("SELECT * FROM users WHERE MSSV = ?",[MSSV],(err,result)=>
-        {
-            if(err)
-            {
+Student.getStudentByMSSV = async (MSSV) => {
+    const data = await new Promise((resolve, reject) => {
+        dbconnection.query("SELECT * FROM users WHERE MSSV = ?", [MSSV], (err, result) => {
+            if (err) {
                 reject(err)
             }
             resolve(result)
@@ -75,28 +72,27 @@ Student.getCountClass = async (idClass) => {
 Student.store = (newStudent) => {
     const hexString = newStudent.img; // Chuỗi hex cần chuyển đổi
     const binaryData = Buffer.from(hexString, 'hex')
-     newStudent.img=binaryData
+    newStudent.img = binaryData
     return new Promise((resolve, reject) => {
-        try{
+        try {
 
-          
- 
-            
-                dbconnection.query("INSERT INTO users SET ?",newStudent, (err, result) => {
-                    if (err) {
-                        reject({ message: err });
-                    } else {
-                        resolve(result);
-                    }
-                });
-            }
-            catch(err)
-            {
-                console.log(err)
-            }
+
+
+
+            dbconnection.query("INSERT INTO users SET ?", newStudent, (err, result) => {
+                if (err) {
+                    reject({ message: err });
+                } else {
+                    resolve(result);
+                }
             });
-        };
-        
+        }
+        catch (err) {
+            console.log(err)
+        }
+    });
+};
+
 Student.findId = (MSSV) => {
     return new Promise((resolve, reject) => {
         dbconnection.query("SELECT * FROM USERS WHERE MSSV= ?", MSSV, (err, result) => {

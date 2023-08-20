@@ -42,7 +42,6 @@ async function createstudent(req, res, next) {
 
   try {
     const d = new Date();
-    const id = d.getTime();
     const img = req.body.img.data
     console.log(req.body.img.data)
     const formData = req.body
@@ -64,7 +63,7 @@ async function createstudent(req, res, next) {
         Sex: formData.Sex,
         img: hhexString || "img",
         create_by:formData.create_by,
-        create_at: functionUse.reuturndate(id)
+        create_at: functionUse.reuturndate()
       }
       const newUser = {
 
@@ -72,7 +71,7 @@ async function createstudent(req, res, next) {
         password: new_student.SDT,
         RefreshToken: RefreshToken,
         RoleID: 2,
-        create_at: functionUse.reuturndate(id)
+        create_at: functionUse.reuturndate()
       }
       const message = await student.store(new_student);
       const createUser = await User.create(newUser)
