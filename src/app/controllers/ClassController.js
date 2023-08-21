@@ -3,7 +3,6 @@ const functionUse = require('./function/returndate');
 
 class ClassController {
     async getClassMonHoc(req, res, next) {
-        console.log(req.body.MaMonHoc)
         try {
             const classes = await ClassModel.getAllClassMonHoc(req.body.MaMonHoc);
             res.send(classes)
@@ -22,21 +21,41 @@ class ClassController {
 
     }
     async DangKyLopHoc(req, res, next) {
-        console.log(req.body)
-        const thongtindangki={
-            "ID":3,
-            "CLASSID":req.body.CLASSID,
-            "MSSV":req.body.MSSV,
-            "create_at":functionUse.reuturndate()
+        const thongtindangki = {
+            "CLASSID": req.body.CLASSID,
+            "MSSV": req.body.MSSV,
+            "create_at": functionUse.reuturndate()
         }
         try {
 
-            const dangky=await ClassModel.DangKyHoc(thongtindangki)
+            const dangky = await ClassModel.DangKyHoc(thongtindangki)
             console.log(dangky)
             res.status(200)
         } catch (error) {
             res.send(error)
 
+        }
+    }
+    async LopDaDangKy(req, res, next) {
+       
+        try {
+
+            const dangky = await ClassModel.LopDaDangKy(req.body.MSSV)
+            console.log(dangky)
+            res.send(dangky)
+        } catch (error) {
+            res.send(error)
+
+        }
+    }
+    async DsacMonTheoKhoa(req,res,next)
+    {
+        try {
+            const danhsachmon = await ClassModel.DsachMonHocTheoKhoa(req.body.MSSV)
+            console.log(danhsachmon)
+            res.send(danhsachmon)
+        } catch (error) {
+            
         }
     }
 }

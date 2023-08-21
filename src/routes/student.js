@@ -21,5 +21,7 @@ router.post('/api/getClassMonHoc',classController.getClassMonHoc)
 
 router.get('/api/getMonHoc',classController.getAllMonHoc)
 router.post('/api/dangkihoc',classController.DangKyLopHoc)
+router.post('/api/lopdadangky',classController.LopDaDangKy)
+router.post('/api/danhsachmontheokhoa',classController.DsacMonTheoKhoa)
 
 module.exports=router;

@@ -34,7 +34,6 @@ ClassModel.getAllMonHoc = async () => {
     return monhoc
 }
 ClassModel.DangKyHoc =  (data) => {
-    console.log("cac")
     const query="Insert into chitietlophoc set ?";
     return new Promise((resolve, reject) => {
         try {
@@ -53,5 +52,45 @@ ClassModel.DangKyHoc =  (data) => {
         }
       
     })
+}
+ClassModel.LopDaDangKy= async (MSSV)=>
+{
+    const query="SELECT chitietlophoc.CLASSID from chitietlophoc where MSSV= ?";
+    const Dsachlop= await new Promise((resolve, reject) => {
+        try {
+            dbconnection.query(query, [MSSV],(error,result)=>{
+                if(error)
+                {
+                    reject(error)
+                }
+                else{
+                    resolve(result)
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    })
+    return Dsachlop
+}
+ClassModel.DsachMonHocTheoKhoa=async(MSSV)=>
+{
+    const query="select monhoc.MonHocID, monhoc.MonHocTen,monhoc.TinChi,khoa.KhoaName,khoa.KhoaID from monhoc JOIN chitietmonhoc on monhoc.MonHocID = chitietmonhoc.MonHocID JOIN khoa on khoa.KhoaID= chitietmonhoc.KhoaID join users on users.Khoa=khoa.KhoaID where users.MSSV= ?";
+    const Dsachmon= await new Promise((resolve, reject) => {
+        try {
+            dbconnection.query(query, [MSSV],(error,result)=>{
+                if(error)
+                {
+                    reject(error)
+                }
+                else{
+                    resolve(result)
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    })
+    return Dsachmon
 }
 module.exports = ClassModel
