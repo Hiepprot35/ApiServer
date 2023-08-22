@@ -105,15 +105,15 @@ class LoginController {
     async apiReFreshToken(req, res, next) {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-        const RefreshToken = req.cookies.RefreshToken || req.body.RefreshToken;
+        const RefreshToken =  req.body.RefreshToken;
         console.log(RefreshToken)
         if (!RefreshToken) {
-            res.status(403).json("đmm")
+            res.status(401).json("đmm")
         }
         else {
 
             jwt.verify(RefreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user1) => {
-                if (err) return res.status(403)
+                if (err) return res.status(402)
                 else {
 
                     
