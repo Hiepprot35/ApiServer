@@ -6,8 +6,8 @@ const express = require('express')
 const port = process.env.APP_port
 const app = express()
 const bodyParser = require('body-parser');
-const Host_URL = 'http://localhost:3000'
-// const Host_URL='https://tuanhiepprot3.netlify.app';
+// const Host_URL = 'http://localhost:3000'
+const Host_URL='https://tuanhiepprot3.netlify.app';
 app.use(cors({
     origin: Host_URL,
     credentials: true,
