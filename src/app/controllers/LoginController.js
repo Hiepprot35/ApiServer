@@ -108,9 +108,9 @@ class LoginController {
         const rf = req.headers['refreshtoken'];
 
         const RefreshToken =  req.body;
-        console.log("body",RefreshToken)
-        console.log("header",rf)
-        if (!rf) {
+        // console.log("body",RefreshToken)
+        // console.log("header",rf)
+        if (!RefreshToken) {
             res.status(401).json("đmm")
         }
         else {
