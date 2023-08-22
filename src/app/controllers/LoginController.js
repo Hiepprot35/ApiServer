@@ -105,8 +105,11 @@ class LoginController {
     async apiReFreshToken(req, res, next) {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
+        const rf = req.headers['refreshtoken'];
+
         const RefreshToken =  req.body.RefreshToken;
         console.log(RefreshToken)
+        console.log(rf)
         if (!RefreshToken) {
             res.status(401).json("đmm")
         }
