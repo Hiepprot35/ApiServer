@@ -106,7 +106,7 @@ class LoginController {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         const RefreshToken = req.cookies.RefreshToken || req.body.RefreshToken;
-
+        console.log(RefreshToken)
         if (!RefreshToken) {
             res.status(403).json("đmm")
         }
