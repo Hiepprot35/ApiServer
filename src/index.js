@@ -66,13 +66,13 @@ io.on("connection", (socket) => {
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     console.log("--------------------")
-    console.log("Socket",socket.id)
+    console.log("Now on",socket.id)
     io.emit("getUsers", users);
   });
   socket.on("sendMessage", ({ sender_id, receiverId, content }) => {
     const user = getUser(receiverId)
     if (user) {
-      console.log("Send to:",user.socketId)
+      console.log(socket.id,"Send to:",user.socketId)
       console.log("-----------------------------")
       io.to(user?.socketId).emit("getMessage", {
       
@@ -82,14 +82,11 @@ io.on("connection", (socket) => {
     }
   }
   );
-  // socket.on("disconnect", () => {
-  //   // Tìm và xóa kết nối socket của người dùng khỏi đối tượng users
-  //   const userId = Object.keys(users).find((key) => users[key] === socket.id);
-  //   if (userId) {
-  //     delete users[userId];
-  //   }
-  //   console.log("Logout")
-  // });
+  socket.on("disconnect", () => {
+    console.log("a user disconnected!");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
+  });
 });
 routes(app)
 server.listen(port, () => console.log(`App listening at http://localhost:${port}`))
