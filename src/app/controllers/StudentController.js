@@ -19,16 +19,11 @@ async function getAllStudents(req, res, next) {
 async function getStudentByMSSV(req, res, next) {
   try {
     
-    if(req.body.username==="admin")
-    {
-      res.status(200).json("Admin")
-    }
-    else
-    {
-      const StudentByMSSV = await student.getStudentByMSSV(req.body.username);
+  
+      const StudentByMSSV = await student.getStudentByMSSV(req.params.mssv);
       
       res.status(200).send(StudentByMSSV)
-    }
+    
   } catch (error) {
     res.json(error)
     res.status(402)

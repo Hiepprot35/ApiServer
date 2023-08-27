@@ -10,7 +10,7 @@ const LoginController = require('../app/controllers/LoginController');
 router.post('/api/login',loginController.loginAPI)
 router.post('/api/rfAccessToken',loginController.apiReFreshToken)
 router.post('/api/getRefreshToken',loginController.checkRefreshToken)
-router.post('/api/getStudentbyID',studentController.getStudentByMSSV)
+router.get('/api/getStudentbyID/:mssv',studentController.getStudentByMSSV)
 router.get('/api/username',loginController.findUsernameID)
 
 router.get('/getallstudent',loginController.authenticateToken,studentController.getAllStudents)

@@ -15,7 +15,6 @@ app.use(cors({
   origin: Host_URL,
   credentials: true,
   exposedHeaders: ["set-cookie"],
-
 }));
 var cookieParser = require('cookie-parser')
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -85,7 +84,6 @@ io.on("connection", (socket) => {
     if (userId) {
       delete users[userId];
     }
-    console.log("A user disconnected.");
   });
 });
 routes(app)
