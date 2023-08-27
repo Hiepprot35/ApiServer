@@ -23,11 +23,12 @@ User.create = function (newUser) {
     }
     );
 }
-User.findallUser = function () {
+User.findUsernameID = function (usernameID) {
     return new Promise(function (resolve, reject) {
 
-        dbconnection.query('Select * from users', (err, data) => {
+        dbconnection.query('Select * from username where UserID=?',[usernameID], (err, data) => {
             if (err) {
+                reject(err)
             }
             else {
                 resolve(data);

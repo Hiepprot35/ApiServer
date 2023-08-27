@@ -8,8 +8,8 @@ const { Server } = require('socket.io')
 const app = express()
 const server = http.createServer(app);
 const bodyParser = require('body-parser');
-// const Host_URL = 'http://localhost:3000'
-const Host_URL='https://tuanhiepprot3.netlify.app';
+const Host_URL = 'http://localhost:3000'
+// const Host_URL='https://tuanhiepprot3.netlify.app';
 
 app.use(cors({
   origin: Host_URL,
@@ -44,23 +44,49 @@ app.set('views', path.join(__dirname, 'resources', 'views'));
 const io = new Server(server, {
   autoConnect: false,
   cors: {
-    origin: [Host_URL,"https://admin.socket.io/"],
+    origin: [Host_URL, "https://admin.socket.io/"],
     methods: ["GET", "POST"],
 
   },
 });
-io.on("connection", (socket) => {
-  console.log(socket.id)
-  
-  socket.on("join_room", (data) => {
-    socket.join(data);
-  });
+let users = [];
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
 
-  socket.on("send_message", (data) => {
-    console.log(data)
-    socket.broadcast.emit("receive_message", data);
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
+io.on("connection", (socket) => {
+  socket.on("addUser", (userId) => {
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
+  });
+  socket.on("sendMessage", ({ sender_id, receiverId, content }) => {
+    const user = getUser(receiverId);
+    if (user) {
+
+      io.to(user?.socketId).emit("getMessage", {
+        sender_id,
+        content,
+      });
+    }
+  }
+  );
+  socket.on("disconnect", () => {
+    // Tìm và xóa kết nối socket của người dùng khỏi đối tượng users
+    const userId = Object.keys(users).find((key) => users[key] === socket.id);
+    if (userId) {
+      delete users[userId];
+    }
+    console.log("A user disconnected.");
   });
 });
 routes(app)
-
 server.listen(port, () => console.log(`App listening at http://localhost:${port}`))

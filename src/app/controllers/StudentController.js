@@ -18,14 +18,15 @@ async function getAllStudents(req, res, next) {
 }
 async function getStudentByMSSV(req, res, next) {
   try {
+    
     if(req.body.username==="admin")
     {
       res.status(200).json("Admin")
     }
     else
     {
-
       const StudentByMSSV = await student.getStudentByMSSV(req.body.username);
+      
       res.status(200).send(StudentByMSSV)
     }
   } catch (error) {
@@ -33,7 +34,6 @@ async function getStudentByMSSV(req, res, next) {
     res.status(402)
 
   }
-  console.log("a")
 }
 
 // Hàm xử lý khi nhận yêu cầu POST "/createstudent"
