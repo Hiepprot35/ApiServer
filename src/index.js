@@ -87,4 +87,4 @@ io.on("connection", (socket) => {
   });
 });
 routes(app)
-server.listen(port, () => console.log(`App listening at http://localhost:${port}`))
+server.listen(port, () => console.log(`App listening at${port}}`))
