@@ -55,22 +55,21 @@ class LoginController {
             console.log(err)
         }
     }
-    async test(req, res, next) {
+    async findUsername(req,res,next)
+    {
         try {
-            const authHeader = req.headers['authorization'];
-            const token = authHeader && authHeader.split(' ')[1];
-            if (token === null) return res.status(403).json({ error: true, message: "Không tồn tại token" });
-            ;
+            const username=await student.findUsername(req.params.username)
+            res.status(200).send(username)
 
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-                if (err) return res.status(401).json({ error: true, message: "Token đã hết hạn" });
-
-                else {
-                    res.status(200).json({ message: "Ok" })
-                }
-
-            })
-
+        }
+        catch (error) {
+            res.send(error)
+        }
+    }
+    async findUsernameID(req, res, next) {
+        try {
+            const username=await student.findUsernameID(req.query.id)
+            res.status(200).send(username)
 
         }
         catch (error) {

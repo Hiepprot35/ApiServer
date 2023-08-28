@@ -23,11 +23,12 @@ User.create = function (newUser) {
     }
     );
 }
-User.findallUser = function () {
+User.findUsernameID = function (usernameID) {
     return new Promise(function (resolve, reject) {
 
-        dbconnection.query('Select * from users', (err, data) => {
+        dbconnection.query('Select * from username where UserID=?',[usernameID], (err, data) => {
             if (err) {
+                reject(err)
             }
             else {
                 resolve(data);
@@ -39,8 +40,18 @@ User.findallUser = function () {
 }
 User.findUsername=async function(userID)
 {
-    const user=await new Promise((resolve, reject) => {
-        dbconnection.query
+    return new Promise(function (resolve, reject) {
+
+        dbconnection.query('Select * from username where username=?',[userID], (err, data) => {
+            if (err) {
+                reject(err)
+            }
+            else {
+                resolve(data);
+            }
+
+        }
+        );
     })
 }
 User.findId = async function (User) {
