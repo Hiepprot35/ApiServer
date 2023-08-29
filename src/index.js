@@ -8,8 +8,8 @@ const { Server } = require('socket.io')
 const app = express()
 const server = http.createServer(app);
 const bodyParser = require('body-parser');
-// const Host_URL = 'http://localhost:3000'
-const Host_URL='https://tuanhiepprot3.netlify.app';
+const Host_URL = 'http://localhost:3000'
+// const Host_URL='https://tuanhiepprot3.netlify.app';
 
 app.use(cors({
   origin: Host_URL,

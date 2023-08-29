@@ -37,9 +37,8 @@ ON m.conversation_id = latest_msg.conversation_id AND m.created_at = latest_msg.
 INNER JOIN (
     SELECT c.user1, c.user2, c.id 
     FROM conversations c 
-    WHERE c.user1 = '27' OR c.user2 = '27'
-) AS c ON c.id = m.conversation_id ORDER by m.created_at DESC;
-`
+    WHERE c.user1 = ? OR c.user2 = ?
+) AS c ON c.id = m.conversation_id ORDER by m.created_at DESC;`
 
     const userSent = await new Promise((resolve, reject) => {
         dbconnection.query(query, [user1, user2], (err, result) => {
