@@ -18,24 +18,27 @@ Message_Conversation.insertConversation = async (data) => {
 }
 Message_Conversation.findSender = async (user1, user2) => {
     // const query="Select * from conversations where user1=? or user2=?"
-    const query = `SELECT c.user1,c.user2,m.content,m.conversation_id as id,
+    const query = `
+    SELECT
+	c.user1,
+    c.user2,
+    m.content,
+    m.conversation_id AS id,
     m.created_at
-FROM 
-    messages m
+FROM messages m
 JOIN (
     SELECT 
-    	
         conversation_id,
         MAX(created_at) AS max_created_at
-    FROM 
-        messages
-    GROUP BY 
-        conversation_id
-    
+    FROM messages
+    GROUP BY conversation_id
 ) AS latest_msg
-ON 
-    m.conversation_id = latest_msg.conversation_id
-    AND m.created_at = latest_msg.max_created_at INNER JOIN (SELECT c.user1,c.user2,c.id FROM conversations c WHERE c.user1= ? or c.user2=? ) AS c ON c.id = m.conversation_id GROUP BY m.conversation_id ORDER by m.created_at DESC;
+ON m.conversation_id = latest_msg.conversation_id AND m.created_at = latest_msg.max_created_at
+INNER JOIN (
+    SELECT c.user1, c.user2, c.id 
+    FROM conversations c 
+    WHERE c.user1 = '27' OR c.user2 = '27'
+) AS c ON c.id = m.conversation_id ORDER by m.created_at DESC;
 `
 
     const userSent = await new Promise((resolve, reject) => {
