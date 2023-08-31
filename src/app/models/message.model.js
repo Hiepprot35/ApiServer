@@ -105,8 +105,7 @@ Message_Conversation.FindMessFollowConver = async (data) => {
     })
     return result
 }
-Message_Conversation.LastMessSeen=async(data)=>
-{
+Message_Conversation.LastMessSeen = async (data) => {
     const query = "Select id,cotent,sender_is,max(Seen_at) from messages where isSeen=true and conversation_id=?";
     const result = await new Promise((resolve, reject) => {
         dbconnection.query(query, data, (err, result) => {
@@ -117,12 +116,22 @@ Message_Conversation.LastMessSeen=async(data)=>
             }
         })
     })
-    return result}
-    Message_Conversation.SeenMess=async(data)=>
-{
-    const query = "UPDATE messages set isSeen=true where created_at =(select MAX(created_at) from messages where conversation_id=? and sender_id=? and isSeen=false)";
+    return result
+}
+Message_Conversation.SeenMess = async (data) => {
+    const query = `UPDATE messages
+    SET isSeen = true
+    WHERE created_at = (
+        SELECT MAX(created_at)
+        FROM (
+            SELECT created_at
+            FROM messages
+            WHERE conversation_id = 27 AND sender_id = 27 AND isSeen = false
+        ) AS subquery
+    );
+    `;
     const result = await new Promise((resolve, reject) => {
-        dbconnection.query(query, [data.conversation_id,data.sender_id], (err, result) => {
+        dbconnection.query(query, [data.conversation_id, data.sender_id], (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -130,9 +139,9 @@ Message_Conversation.LastMessSeen=async(data)=>
             }
         })
     })
-    return result}
-Message_Conversation.HaveSeenMesssage=async(data)=>
-{
+    return result
+}
+Message_Conversation.HaveSeenMesssage = async (data) => {
     const query = "Select isSeen from messages where id=?";
     const result = await new Promise((resolve, reject) => {
         dbconnection.query(query, data, (err, result) => {
@@ -143,9 +152,9 @@ Message_Conversation.HaveSeenMesssage=async(data)=>
             }
         })
     })
-    return result}
-    Message_Conversation.FindNewstMessFollowConverOfSender=async(data)=>
-{
+    return result
+}
+Message_Conversation.FindNewstMessFollowConverOfSender = async (data) => {
     const query = `SELECT m1.id, m1.sender_id, m1.conversation_id, m1.content, m1.created_at, m1.isSeen, m1.Seen_at
     FROM messages m1
     WHERE m1.conversation_id = ? and m1.sender_id= ?
@@ -165,5 +174,6 @@ Message_Conversation.HaveSeenMesssage=async(data)=>
             }
         })
     })
-    return result}
+    return result
+}
 module.exports = Message_Conversation
