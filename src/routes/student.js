@@ -30,8 +30,11 @@ router.post('/api/danhsachmontheokhoa',classController.DsacMonTheoKhoa)
 router.post('/api/conversations',messageController.insertConVersation)
 router.get('/api/conversations/:userID',messageController.userSentMessage)
 router.post('/api/message',messageController.insertMess)
+router.post('/api/message/seen',messageController.SeenMess)
+
 router.get('/api/message/:conversation_id',messageController.FindMessFollowConver)
 router.get('/api/message/newest/:conversation_id',messageController.FindNewestMessFollowConver)
+router.get('/api/message/newest/seen/:conversation_id/:userID',messageController.FindNewstMessFollowConverOfSender)
 
 
 module.exports=router;

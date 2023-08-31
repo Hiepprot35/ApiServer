@@ -65,15 +65,12 @@ const getUser = (userId) => {
 io.on("connection", (socket) => {
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
-    console.log(socket.id)
-    console.log("connec",users)
  
     io.emit("getUsers", users);
   });
   socket.on("sendMessage", ({ sender_id, receiverId, content }) => {
     const user = getUser(receiverId)
     if (user) {
-      console.log(socket.id,"send to",user.socketId)
       io.to(user?.socketId).emit("getMessage", {
       
         sender_id,
@@ -81,7 +78,18 @@ io.on("connection", (socket) => {
       });
     }
   }
+  
+  
   );
+  socket.on("UserSeen",({sender_id,receiverId,Seen_at})=>{
+    const user=getUser(sender_id)
+    
+    if(user)
+    {
+      io.to(user?.socketId).emit("getUserSeen",Date.now());
+    }
+  }
+  )
   socket.on("disconnect", () => {
     removeUser(socket.id);
     io.emit("getUsers", users);

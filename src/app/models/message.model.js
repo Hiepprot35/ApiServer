@@ -19,26 +19,36 @@ Message_Conversation.insertConversation = async (data) => {
 Message_Conversation.findSender = async (user1, user2) => {
     // const query="Select * from conversations where user1=? or user2=?"
     const query = `
-    SELECT
-	c.user1,
-    c.user2,
-    m.content,
-    m.conversation_id AS id,
-    m.created_at
-FROM messages m
-JOIN (
     SELECT 
-        conversation_id,
-        MAX(created_at) AS max_created_at
-    FROM messages
-    GROUP BY conversation_id
-) AS latest_msg
-ON m.conversation_id = latest_msg.conversation_id AND m.created_at = latest_msg.max_created_at
-INNER JOIN (
-    SELECT c.user1, c.user2, c.id 
-    FROM conversations c 
-    WHERE c.user1 = ? OR c.user2 = ?
-) AS c ON c.id = m.conversation_id ORDER by m.created_at DESC;`
+    d.user1,d.user2,
+    d.content,d.id,
+    d.created_at
+    FROM
+    (SELECT
+      c.user1,
+      c.user2,
+      m.content,
+      m.conversation_id AS id,
+      m.created_at
+  FROM messages m 
+  JOIN (
+      SELECT  
+          content,
+          conversation_id,
+          MAX(created_at) AS max_created_at
+      FROM messages
+      GROUP BY conversation_id 
+  
+  ) AS latest_msg
+  ON m.conversation_id = latest_msg.conversation_id AND m.created_at = latest_msg.max_created_at 
+  INNER JOIN (
+      SELECT c.user1, c.user2, c.id 
+      FROM conversations c 
+      WHERE c.user1 = ? OR c.user2 = ?
+  ) AS c ON c.id = m.conversation_id 
+  ) AS d
+  GROUP BY d.id  ORDER by d.created_at desc;
+  `
 
     const userSent = await new Promise((resolve, reject) => {
         dbconnection.query(query, [user1, user2], (err, result) => {
@@ -87,7 +97,7 @@ Message_Conversation.insertMess = async (data) => {
 Message_Conversation.FindMessFollowConver = async (data) => {
     const query = "Select * from messages where conversation_id=?";
     const result = await new Promise((resolve, reject) => {
-        dbconnection.query(query, data, (err, result) => {
+        dbconnection.query(query, [data], (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -97,4 +107,65 @@ Message_Conversation.FindMessFollowConver = async (data) => {
     })
     return result
 }
+Message_Conversation.LastMessSeen=async(data)=>
+{
+    const query = "Select id,cotent,sender_is,max(Seen_at) from messages where isSeen=true and conversation_id=?";
+    const result = await new Promise((resolve, reject) => {
+        dbconnection.query(query, data, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+    return result}
+    Message_Conversation.SeenMess=async(data)=>
+{
+    const query = "UPDATE messages set isSeen=true where created_at =(select MAX(created_at) from messages where conversation_id=? and sender_id=? and isSeen=false)";
+    const result = await new Promise((resolve, reject) => {
+        dbconnection.query(query, [data.conversation_id,data.sender_id], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+    return result}
+Message_Conversation.HaveSeenMesssage=async(data)=>
+{
+    const query = "Select isSeen from messages where id=?";
+    const result = await new Promise((resolve, reject) => {
+        dbconnection.query(query, data, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+    return result}
+    Message_Conversation.FindNewstMessFollowConverOfSender=async(data)=>
+{
+    const query = `SELECT m1.id, m1.sender_id, m1.conversation_id, m1.content, m1.created_at, m1.isSeen, m1.Seen_at
+    FROM messages m1
+    WHERE m1.conversation_id = ? and m1.sender_id= ?
+        AND m1.isSeen = true
+        AND m1.created_at = (
+            SELECT MAX(created_at)
+            FROM messages m2
+            WHERE m2.sender_id = m1.sender_id
+                AND m2.conversation_id = m1.conversation_id);
+    `;
+    const result = await new Promise((resolve, reject) => {
+        dbconnection.query(query, data, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+    return result}
 module.exports = Message_Conversation
