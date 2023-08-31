@@ -126,7 +126,7 @@ Message_Conversation.SeenMess = async (data) => {
         FROM (
             SELECT created_at
             FROM messages
-            WHERE conversation_id = 27 AND sender_id = 27 AND isSeen = false
+            WHERE conversation_id = ? AND sender_id = ? AND isSeen = false
         ) AS subquery
     );
     `;
