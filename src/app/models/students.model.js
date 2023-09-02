@@ -71,8 +71,13 @@ Student.getCountClass = async (idClass) => {
 };
 Student.store = (newStudent) => {
     const hexString = newStudent.img; // Chuỗi hex cần chuyển đổi
+    const hexString2 = newStudent.backgroundimg; // Chuỗi hex cần chuyển đổi
+
     const binaryData = Buffer.from(hexString, 'hex')
+    const binaryData2 = Buffer.from(hexString2, 'hex')
+
     newStudent.img = binaryData
+    newStudent.backgroundimg=binaryData2
     return new Promise((resolve, reject) => {
         try {
 

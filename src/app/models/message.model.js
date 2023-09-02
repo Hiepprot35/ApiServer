@@ -106,7 +106,7 @@ Message_Conversation.FindMessFollowConver = async (data) => {
     return result
 }
 Message_Conversation.LastMessSeen = async (data) => {
-    const query = "Select id,cotent,sender_is,max(Seen_at) from messages where isSeen=true and conversation_id=?";
+    const query = "Select id,content,sender_is,max(Seen_at) from messages where isSeen=true and conversation_id=?";
     const result = await new Promise((resolve, reject) => {
         dbconnection.query(query, data, (err, result) => {
             if (err) {
@@ -167,6 +167,43 @@ Message_Conversation.FindNewstMessFollowConverOfSender = async (data) => {
     `;
     const result = await new Promise((resolve, reject) => {
         dbconnection.query(query, data, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+    return result
+}
+Message_Conversation.FindConverFollowUserguest = async (data) => {
+    const query = `select * from conversations where (user2=? and user1=?) or (user1=? and user2=?)`
+    const result = await new Promise((resolve, reject) => {
+        dbconnection.query(query, [data.user1, data.user2, data.user1, data.user2], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+    return result
+}
+Message_Conversation.FindUserSendToAuth = async (data) => {
+    const query = `SELECT username.username
+    FROM (
+        SELECT DISTINCT user1 AS user
+        FROM conversations
+        WHERE user2 = ?
+        UNION
+        SELECT DISTINCT user2 AS user
+        FROM conversations
+        WHERE user1 = ?
+    ) AS c
+    INNER JOIN username ON username.UserID = c.user;
+    `
+    const result = await new Promise((resolve, reject) => {
+        dbconnection.query(query, [data.user1, data.user2, data.user1, data.user2], (err, result) => {
             if (err) {
                 reject(err);
             } else {

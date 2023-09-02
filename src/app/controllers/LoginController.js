@@ -5,7 +5,7 @@ const student = require('../models/user.model')
 
 const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
-const TimeAccessToken = "10m"
+const TimeAccessToken = "1s"
 const TimeRefreshToken = "1d"
 require('dotenv').config()
 
@@ -93,7 +93,7 @@ class LoginController {
                 const AccessToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
                 const RefreshToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
                 res.cookie("RefreshToken", RefreshToken)
-                res.status(200).send({ "UserID": result.UserID,"Username":result.username, "Role": result.RoleID, "AccessToken": AccessToken, "expiresIn": TimeAccessToken, "RefreshToken": RefreshToken });
+                res.status(200).send({ "UserID": result.UserID,"Username":result.username,"Email":result.Email, "Role": result.RoleID, "AccessToken": AccessToken, "expiresIn": TimeAccessToken, "RefreshToken": RefreshToken,"isVerify":result.isVerify });
 
             }
         } catch (error) {

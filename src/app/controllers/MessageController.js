@@ -32,14 +32,14 @@ class MessageController {
                 conversation_id: req.body.conversation_id,
                 content: req.body.content,
             }
-           
+
             const insert = await Message_Conversation.insertMess(data)
-            const result={
-                id:insert.insertId,
+            const result = {
+                id: insert.insertId,
                 sender_id: req.body.sender_id,
                 conversation_id: req.body.conversation_id,
                 content: req.body.content,
-                created_at:Date.now()
+                created_at: Date.now()
             }
             res.status(200).send(result)
 
@@ -67,9 +67,9 @@ class MessageController {
     async FindNewstMessFollowConverOfSender(req, res, next) {
         const data = [
 
-            req.params.conversation_id,req.params.userID
+            req.params.conversation_id, req.params.userID
         ]
-        
+
         try {
             const result = await Message_Conversation.FindNewstMessFollowConverOfSender(data)
             res.status(200).send(result[0])
@@ -84,6 +84,32 @@ class MessageController {
         }
         try {
             const result = await Message_Conversation.SeenMess(data)
+
+            res.status(200).send(result)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async FindConverFollowUserguest(req, res, next) {
+        const data = {
+            user1: req.params.id,
+            user2: req.body.id
+        }
+        try {
+            const result = await Message_Conversation.FindConverFollowUserguest(data)
+
+            res.status(200).send(result[0])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async FindUserSendToAuth(req, res, next) {
+        const data = {
+            user1: req.body.id,
+            user2: req.body.id
+        }
+        try {
+            const result = await Message_Conversation.FindUserSendToAuth(data)
 
             res.status(200).send(result)
         } catch (error) {

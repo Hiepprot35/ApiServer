@@ -6,13 +6,13 @@ const studentController=require('../app/controllers/StudentController');
 const loginController=require('../app/controllers/LoginController');
 const classController=require('../app/controllers/ClassController')
 const messageController=require('../app/controllers/MessageController');
-const LoginController = require('../app/controllers/LoginController');
+const sendGmaiController= require('../app//controllers/sendGmailController');
 router.post('/api/login',loginController.loginAPI)
 router.post('/api/rfAccessToken',loginController.apiReFreshToken)
 router.post('/api/getRefreshToken',loginController.checkRefreshToken)
 router.get('/api/getStudentbyID/:mssv',studentController.getStudentByMSSV)
 router.get('/api/username',loginController.findUsernameID)
-router.get('/api/userID/:username',loginController.findUsername)
+// router.get('/api/userID/:username',loginController.findUsername)
 
 router.get('/getallstudent',loginController.authenticateToken,studentController.getAllStudents)
 router.post('/api/createStudent',upload.single('image'),studentController.createstudent)
@@ -26,8 +26,12 @@ router.post('/api/lopdadangky',classController.LopDaDangKy)
 router.post('/api/danhsachmontheokhoa',classController.DsacMonTheoKhoa)
 
 
+router.post('/send-email',sendGmaiController.sendGmail)
 
 router.post('/api/conversations',messageController.insertConVersation)
+router.post('/api/conversations/mess/:id',messageController.FindConverFollowUserguest)
+router.post('/api/findusersend',messageController.FindUserSendToAuth)
+
 router.get('/api/conversations/:userID',messageController.userSentMessage)
 router.post('/api/message',messageController.insertMess)
 router.post('/api/message/seen',messageController.SeenMess)

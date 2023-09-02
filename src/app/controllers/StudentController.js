@@ -38,6 +38,8 @@ async function createstudent(req, res, next) {
   try {
     const d = new Date();
     const img = req.body.img.data
+    const backgroundimg = req.body.backgroundimg.data
+
     console.log(req.body.img.data)
     const formData = req.body
 
@@ -45,6 +47,8 @@ async function createstudent(req, res, next) {
     console.log("OKE")
     try {
       const hhexString = img && img.map(byte => byte.toString(16).padStart(2, '0')).join('');
+      const hhexString2 = backgroundimg && backgroundimg.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
       const count = await student.getCountClass(formData.Class)
       console.log(count)
       const new_student = {
@@ -57,6 +61,7 @@ async function createstudent(req, res, next) {
         Class: formData.Class,
         Sex: formData.Sex,
         img: hhexString || "img",
+        backgroundimg:hhexString2||"img",
         create_by:formData.create_by,
         create_at: functionUse.reuturndate()
       }
@@ -66,9 +71,10 @@ async function createstudent(req, res, next) {
         password: new_student.SDT,
         RefreshToken: RefreshToken,
         RoleID: 2,
-        create_at: functionUse.reuturndate()
+        Create_at: functionUse.reuturndate()
       }
       const message = await student.store(new_student);
+      
       const createUser = await User.create(newUser)
       res.status(200)
     }
@@ -102,16 +108,7 @@ async function getAllKhoaApi(req, res, next) {
     res.send(error)
   }
 }
-// Hàm xử lý khi nhận yêu cầu GET "/createView"
-async function createView(req, res, next) {
-  try {
-    const getAllClass = await student.getAllClassInfomation();
-    res.render('courses/create', { classData: getAllClass });
-  } catch (error) {
-    console.log("Lỗi");
-    res.render("/");
-  }
-}
+
 
 // Hàm xử lý khi nhận yêu cầu GET "/"
 async function index(req, res, next) {
@@ -211,7 +208,6 @@ async function change(req, res, next) {
 module.exports = {
   getAllStudents,
   createstudent,
-  createView,
   index,
   create,
   store,
