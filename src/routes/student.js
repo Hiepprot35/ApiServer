@@ -7,38 +7,33 @@ const loginController=require('../app/controllers/LoginController');
 const classController=require('../app/controllers/ClassController')
 const messageController=require('../app/controllers/MessageController');
 const sendGmaiController= require('../app//controllers/sendGmailController');
-router.post('/api/login',loginController.loginAPI)
-router.post('/api/rfAccessToken',loginController.apiReFreshToken)
-router.post('/api/getRefreshToken',loginController.checkRefreshToken)
-router.get('/api/getStudentbyID/:mssv',studentController.getStudentByMSSV)
-router.get('/api/username',loginController.findUsernameID)
-// router.get('/api/userID/:username',loginController.findUsername)
+router.post('/login',loginController.loginAPI)
+router.post('/rfAccessToken',loginController.apiReFreshToken)
+router.post('/getRefreshToken',loginController.checkRefreshToken)
+router.get('/getStudentbyID/:mssv',studentController.getStudentByMSSV)
+router.get('/username',loginController.findUsernameID)
+router.get('/userID/:username',loginController.findUsername)
 
 router.get('/getallstudent',loginController.authenticateToken,studentController.getAllStudents)
-router.post('/api/createStudent',upload.single('image'),studentController.createstudent)
-router.get('/api/getAllClass',studentController.getAllClassApi)
-router.get('/api/getAllKhoa',studentController.getAllKhoaApi)
+router.post('/createStudent',upload.single('image'),studentController.createstudent)
+router.get('/getAllClass',studentController.getAllClassApi)
+router.get('/getAllKhoa',studentController.getAllKhoaApi)
 
-router.post('/api/getClassMonHoc',classController.getClassMonHoc)
-router.get('/api/getMonHoc',classController.getAllMonHoc)
-router.post('/api/dangkihoc',classController.DangKyLopHoc)
-router.post('/api/lopdadangky',classController.LopDaDangKy)
-router.post('/api/danhsachmontheokhoa',classController.DsacMonTheoKhoa)
+router.post('/getClassMonHoc',classController.getClassMonHoc)
+router.get('/getMonHoc',classController.getAllMonHoc)
+router.post('/dangkihoc',classController.DangKyLopHoc)
+router.post('/lopdadangky',classController.LopDaDangKy)
+router.post('/danhsachmontheokhoa',classController.DsacMonTheoKhoa)
 
 
 router.post('/send-email',sendGmaiController.sendGmail)
 
-router.post('/api/conversations',messageController.insertConVersation)
-router.post('/api/conversations/mess/:id',messageController.FindConverFollowUserguest)
-router.post('/api/findusersend',messageController.FindUserSendToAuth)
+router.post('/conversations',messageController.insertConVersation)
+router.post('/conversations/mess/:id',messageController.FindConverFollowUserguest)
+router.post('/findusersend',messageController.FindUserSendToAuth)
 
-router.get('/api/conversations/:userID',messageController.userSentMessage)
-router.post('/api/message',messageController.insertMess)
-router.post('/api/message/seen',messageController.SeenMess)
+router.get('/conversations/:userID',messageController.userSentMessage)
 
-router.get('/api/message/:conversation_id',messageController.FindMessFollowConver)
-router.get('/api/message/newest/:conversation_id',messageController.FindNewestMessFollowConver)
-router.get('/api/message/newest/seen/:conversation_id/:userID',messageController.FindNewstMessFollowConverOfSender)
 
 
 module.exports=router;

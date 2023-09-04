@@ -20,7 +20,9 @@ async function sendGmail(req, res, next) {
         from: 'tansou57@gmail.com',
         to: to,
         subject: subject,
-        text: `Your verify code: " ${verifyCode}`,
+        text: `Your verify code: "${verifyCode}"
+        Click
+        `,
     };
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {

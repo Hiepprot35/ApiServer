@@ -7,8 +7,10 @@ const port = process.env.APP_port;
 const { Server } = require('socket.io')
 const app = express()
 const server = http.createServer(app);
+const session = require('express-session');
 const bodyParser = require('body-parser');
 // const Host_URL = 'http://localhost:3000'
+
 const Host_URL='https://tuanhiepprot3.netlify.app';
 
 app.use(cors({
@@ -16,6 +18,22 @@ app.use(cors({
   credentials: true,
   exposedHeaders: ["set-cookie"],
 }));
+// app.use(session({
+//   secret: '1234',
+//   resave: false,
+//   saveUninitialized: true,
+// }));
+// app.use((req, res, next) => {
+//   req.session.loginAttempts = req.session.loginAttempts || 0;
+//   console.log( req.session.loginAttempts)
+//   next();
+// });
+// app.use((req, res, next) => {
+//   if (req.session.loginAttempts >= 3) {
+//     return res.status(401).json({ message: 'Tài khoản đã bị khóa do nhập sai mật khẩu nhiều lần.' });
+//   }
+//   next();
+// });
 var cookieParser = require('cookie-parser')
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));

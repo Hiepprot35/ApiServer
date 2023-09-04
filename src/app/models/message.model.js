@@ -20,11 +20,14 @@ Message_Conversation.findSender = async (user1, user2) => {
     // const query="Select * from conversations where user1=? or user2=?"
     const query = `
     SELECT 
+    d.isSeen,d.sender_id,
     d.user1, d.user2,
     MAX(d.content) AS content, d.id,
     MAX(d.created_at) AS created_at
 FROM (
     SELECT
+        m.sender_id,
+        m.isSeen,
         c.user1, c.user2,
         m.content, m.conversation_id AS id,
         m.created_at
@@ -45,7 +48,6 @@ FROM (
 ) AS d
 GROUP BY d.id, d.user1, d.user2
 ORDER BY created_at DESC;
-
   `
 
     const userSent = await new Promise((resolve, reject) => {

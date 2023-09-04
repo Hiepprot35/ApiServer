@@ -85,11 +85,13 @@ class LoginController {
         try {
             const result = await student.findId(user);
             if (!result) {
+                // req.session.loginAttempts += 1; // Tăng số lần thử mật khẩu sai
                 return res.status(401).json({ error: true, message: "Không tìm thấy tài khoản hoặc mật khẩu không đúng." });
             }
 
             else {
-                let id = result.RoleID
+                // req.session.loginAttempts = 0; // Đặt lại số lần thử mật khẩu sai
+
                 const AccessToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: TimeAccessToken });
                 const RefreshToken = jwt.sign({ UserID: result.UserID,Username:result.username, Role: result.RoleID }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: TimeRefreshToken });
                 res.cookie("RefreshToken", RefreshToken)
