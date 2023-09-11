@@ -7,7 +7,6 @@ const port = process.env.APP_port;
 const { Server } = require('socket.io')
 const app = express()
 const server = http.createServer(app);
-const session = require('express-session');
 const bodyParser = require('body-parser');
 // const Host_URL = 'http://localhost:3000'
 
