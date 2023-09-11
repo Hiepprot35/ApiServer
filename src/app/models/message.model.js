@@ -20,34 +20,34 @@ Message_Conversation.findSender = async (user1, user2) => {
     // const query="Select * from conversations where user1=? or user2=?"
     const query = `
     SELECT 
-    d.isSeen,d.sender_id,
-    d.user1, d.user2,
-    MAX(d.content) AS content, d.id,
-    MAX(d.created_at) AS created_at
-FROM (
-    SELECT
-        m.sender_id,
-        m.isSeen,
-        c.user1, c.user2,
-        m.content, m.conversation_id AS id,
-        m.created_at
-    FROM messages m 
-    JOIN (
-        SELECT  
-            conversation_id,
-            MAX(created_at) AS max_created_at
-        FROM messages
-        GROUP BY conversation_id 
-    ) AS latest_msg
-    ON m.conversation_id = latest_msg.conversation_id AND m.created_at = latest_msg.max_created_at 
-    INNER JOIN (
-        SELECT c.user1, c.user2, c.id 
-        FROM conversations c 
-        WHERE c.user1 = ? OR c.user2 = ?
-    ) AS c ON c.id = m.conversation_id 
-) AS d
-GROUP BY d.id, d.user1, d.user2
-ORDER BY created_at DESC;
+    MAX(d.isSeen) AS isSeen,
+     MAX(d.sender_id) AS sender_id,
+     d.user1, d.user2,
+     MAX(d.content) AS content, d.id,
+     MAX(d.created_at) AS created_at
+ FROM (
+     SELECT
+         m.sender_id,
+         m.isSeen,
+         c.user1, c.user2,
+         m.content, m.conversation_id AS id,
+         m.created_at
+     FROM messages m 
+     JOIN (
+         SELECT  
+             conversation_id,
+             MAX(created_at) AS max_created_at
+         FROM messages
+         GROUP BY conversation_id 
+     ) AS latest_msg
+     ON m.conversation_id = latest_msg.conversation_id AND m.created_at = latest_msg.max_created_at 
+     INNER JOIN (
+         SELECT c.user1, c.user2, c.id 
+         FROM conversations c 
+         WHERE c.user1 = 27 OR c.user2 = 27
+     ) AS c ON c.id = m.conversation_id 
+ ) AS d GROUP BY d.id, d.user1, d.user2
+ ORDER BY created_at DESC;
   `
 
     const userSent = await new Promise((resolve, reject) => {
