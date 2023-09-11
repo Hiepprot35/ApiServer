@@ -44,7 +44,7 @@ Message_Conversation.findSender = async (user1, user2) => {
      INNER JOIN (
          SELECT c.user1, c.user2, c.id 
          FROM conversations c 
-         WHERE c.user1 = 27 OR c.user2 = 27
+         WHERE c.user1 = ? OR c.user2 = ?
      ) AS c ON c.id = m.conversation_id 
  ) AS d GROUP BY d.id, d.user1, d.user2
  ORDER BY created_at DESC;
