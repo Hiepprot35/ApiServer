@@ -100,7 +100,7 @@ class MessageController {
 
             res.status(200).send(result[0])
         } catch (error) {
-            console.log(error)
+            res.send(error)
         }
     }
     async FindUserSendToAuth(req, res, next) {
