@@ -17,6 +17,21 @@ Student.getAllStudents = () => {
     }
     )
 }
+Student.findUserSearchBar=(data)=>{
+    const query=`select users.MSSV,username.UserID from users inner join username on users.MSSV=username.username  where users.Name like ?`;
+    const searchTerm = `%${data}%`; // Thêm dấu % ở đây để tạo thành một chuỗi tìm kiếm hợp lệ.
+
+    return new Promise((resolve,reject)=>{
+        dbconnection.query(query,searchTerm,(error,result)=>{
+            if(error)
+            {
+                reject(error)
+            }
+            else
+            resolve(result)
+        })
+    })
+}
 Student.getStudentByMSSV = async (MSSV) => {
     const data = await new Promise((resolve, reject) => {
         dbconnection.query("SELECT * FROM users WHERE MSSV = ?", [MSSV], (err, result) => {

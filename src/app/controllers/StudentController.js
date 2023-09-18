@@ -7,6 +7,7 @@ const student = require('../models/students.model');
 const User = require('../models/user.model');
 
 const functionUse = require('./function/returndate');
+const Student = require('../models/students.model');
 // Hàm xử lý khi nhận yêu cầu GET "/getAllStudents"
 async function getAllStudents(req, res, next) {
   try {
@@ -30,7 +31,15 @@ async function getStudentByMSSV(req, res, next) {
 
   }
 }
-
+async function findUserSearchBar(req,res,next)
+{
+  try {
+    const result=await student.findUserSearchBar(req.body.data)
+    res.send(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
 // Hàm xử lý khi nhận yêu cầu POST "/createstudent"
 async function createstudent(req, res, next) {
   console.log("OKE")
@@ -215,5 +224,6 @@ module.exports = {
   change,
   getAllClassApi,
   getStudentByMSSV,
-  getAllKhoaApi
+  getAllKhoaApi,
+  findUserSearchBar
 };

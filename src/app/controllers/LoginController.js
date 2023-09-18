@@ -6,7 +6,7 @@ const student = require('../models/user.model')
 const jwt = require('jsonwebtoken');
 const Buffer = require('buffer').Buffer;
 const TimeAccessToken = "1s"
-const TimeRefreshToken = "1d"
+const TimeRefreshToken = "10d"
 require('dotenv').config()
 
 class LoginController {

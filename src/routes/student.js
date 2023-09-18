@@ -18,8 +18,12 @@ router.get('/getallstudent',loginController.authenticateToken,studentController.
 router.post('/createStudent',upload.single('image'),studentController.createstudent)
 router.get('/getAllClass',studentController.getAllClassApi)
 router.get('/getAllKhoa',studentController.getAllKhoaApi)
+router.post('/studentSearchBar',studentController.findUserSearchBar)
 
 router.post('/getClassMonHoc',classController.getClassMonHoc)
+router.get('/getListKiHoc',classController.ListKihoc)
+router.post('/getLichHoc',classController.getLichHoc)
+
 router.get('/getMonHoc',classController.getAllMonHoc)
 router.post('/dangkihoc',classController.DangKyLopHoc)
 router.post('/lopdadangky',classController.LopDaDangKy)
