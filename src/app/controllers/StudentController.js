@@ -59,7 +59,6 @@ async function createstudent(req, res, next) {
       const hhexString2 = backgroundimg && backgroundimg.map(byte => byte.toString(16).padStart(2, '0')).join('');
 
       const count = await student.getCountClass(formData.Class)
-      console.log(count)
       const new_student = {
         MSSV: functionUse.reuturnID(formData.Khoa, formData.Class, count),
         Name: formData.Name,
@@ -83,7 +82,7 @@ async function createstudent(req, res, next) {
         Create_at: functionUse.reuturndate()
       }
       const message = await student.store(new_student);
-      
+      console.log(message)
       const createUser = await User.create(newUser)
       res.status(200)
     }
